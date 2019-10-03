@@ -3,10 +3,10 @@
 
 from costs import compute_loss, compute_loss_mae
 from gradient import compute_subgradient, compute_gradient
-from numpy import ndarray
+import numpy as np
 
 
-def gradient_descent(y: ndarray, tx: ndarray, initial_w: ndarray, max_iters: int, gamma: float) -> ndarray:
+def gradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: float) -> tuple:
     """Gradient descent algorithm. Uses MSE loss function.
 
     Parameters
@@ -50,7 +50,7 @@ def gradient_descent(y: ndarray, tx: ndarray, initial_w: ndarray, max_iters: int
     return losses, ws
 
 
-def subgradient_descent(y: ndarray, tx: ndarray, initial_w: ndarray, max_iters: int, gamma: int):
+def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: int) -> tuple:
     """Subgradient descent algorithm. Uses MAE loss function.
     
     Parameters

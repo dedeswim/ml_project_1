@@ -47,4 +47,3 @@ def compute_subgradient(y, tx, w):
     e = y - tx.dot(w)
 
     return - 1 / n * tx.T.dot(np.sign(e))
-
