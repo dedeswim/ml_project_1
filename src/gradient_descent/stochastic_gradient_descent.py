@@ -8,7 +8,28 @@ from gradient import compute_subgradient, compute_gradient
 
 def stochastic_gradient_descent(
         y, tx, initial_w, batch_size, max_iters, gamma):
-    """Stochastic gradient descent algorithm."""
+    """Stochastic gradient descent algorithm. Uses MSE loss function.
+
+    Parameters
+    ----------
+    y: ndarray
+        Array that contains the correct values to be predicted.
+    tx: ndarray
+        Matrix that contains the data points. The first column is made of 1s.
+    initial_w: ndarray
+        Array containing the regression parameters to start from.
+    max_iters: int
+        The maximum number of iterations to be done.
+    gamma: float
+        The stepsize of the SGD
+
+    Returns
+    -------
+    losses, ws: ndarray, ndarray
+        Array containing the losses using the different ws found with the SGD,
+        Array containing the regression parameters found with the SGD.
+    
+    """
 
     # Define parameters to store w and loss
     ws = [initial_w]
@@ -36,7 +57,27 @@ def stochastic_gradient_descent(
 
 def stochastic_subgradient_descent(
         y, tx, initial_w, batch_size, max_iters, gamma):
-    """Stochastic gradient descent algorithm."""
+    """Stochastic subgradient descent algorithm. Uses MAE loss function.
+    
+    Parameters
+    ----------
+    y: ndarray
+        Array that contains the correct values to be predicted.
+    tx: ndarray
+        Matrix that contains the data points. The first column is made of 1s.
+    initial_w: ndarray
+        Array containing the regression parameters to start from.
+    max_iters: int
+        The maximum number of iterations to be done.
+    gamma: float
+        The stepsize of the SGD
+
+    Returns
+    -------
+    losses, ws: ndarray, ndarray:
+        Array containing the losses using the different ws found with the SGD,
+        Array containing the regression parameters found with the SGD.
+    """
 
     # Define parameters to store w and loss
     ws = [initial_w]

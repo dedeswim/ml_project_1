@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Function used to compute the loss."""
+"""Functions used to compute the loss."""
 
 import numpy as np
-
 
 def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray) -> float:
     """Calculate the loss using MSE for linear regression.

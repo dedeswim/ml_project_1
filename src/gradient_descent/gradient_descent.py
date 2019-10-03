@@ -51,7 +51,7 @@ def gradient_descent(y: ndarray, tx: ndarray, initial_w: ndarray, max_iters: int
 
 
 def subgradient_descent(y: ndarray, tx: ndarray, initial_w: ndarray, max_iters: int, gamma: int):
-    """Subgradient descent algorithm. It uses MSE loss function.
+    """Subgradient descent algorithm. Uses MAE loss function.
     
     Parameters
     ----------
