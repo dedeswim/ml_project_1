@@ -4,10 +4,11 @@
 from helpers import batch_iter
 from costs import compute_loss, compute_loss_mae
 from gradient import compute_subgradient, compute_gradient
+import numpy as np
 
 
 def stochastic_gradient_descent(
-        y, tx, initial_w, batch_size, max_iters, ratio = 0.7):
+        y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int, ratio: float = 0.7) -> tuple:
     """Stochastic gradient descent algorithm. Uses MSE loss function.
 
     Parameters
@@ -18,6 +19,8 @@ def stochastic_gradient_descent(
         Matrix that contains the data points. The first column is made of 1s.
     initial_w: ndarray
         Array containing the regression parameters to start from.
+    batch_size: int
+        The size of the batches to be created.
     max_iters: int
         The maximum number of iterations to be done.
     ratio: float
@@ -28,7 +31,7 @@ def stochastic_gradient_descent(
     losses, ws: ndarray, ndarray
         Array containing the losses using the different ws found with the SGD,
         Array containing the regression parameters found with the SGD.
-    
+
     """
 
     # Define parameters to store w and loss
@@ -59,7 +62,7 @@ def stochastic_gradient_descent(
 
 
 def stochastic_subgradient_descent(
-        y, tx, initial_w, batch_size, max_iters, ratio = 0.7):
+        y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int, ratio: float = 0.7) -> tuple:
     """Stochastic subgradient descent algorithm. Uses MAE loss function.
     
     Parameters
@@ -70,6 +73,8 @@ def stochastic_subgradient_descent(
         Matrix that contains the data points. The first column is made of 1s.
     initial_w: ndarray
         Array containing the regression parameters to start from.
+    batch_size: int
+        Other size of the batches.
     max_iters: int
         The maximum number of iterations to be done.
     ratio: float
