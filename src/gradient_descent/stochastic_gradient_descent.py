@@ -7,7 +7,7 @@ from gradient import compute_subgradient, compute_gradient
 
 
 def stochastic_gradient_descent(
-        y, tx, initial_w, batch_size, max_iters, gamma):
+        y, tx, initial_w, batch_size, max_iters, ratio = 0.7):
     """Stochastic gradient descent algorithm. Uses MSE loss function.
 
     Parameters
@@ -20,8 +20,8 @@ def stochastic_gradient_descent(
         Array containing the regression parameters to start from.
     max_iters: int
         The maximum number of iterations to be done.
-    gamma: float
-        The stepsize of the SGD
+    ratio: float
+        The ratio at wich the stepsize converges (0.5 - 1.0), default = 0.7.
 
     Returns
     -------
@@ -36,6 +36,9 @@ def stochastic_gradient_descent(
     losses = []
     w = initial_w
     for n_iter in range(max_iters):
+        
+        # Calculate gamma (Robbins-Monroe condition)
+        gamma = 1 / pow(n_iter + 1, ratio)
 
         # Create the batch
         for minibatch_y, minibatch_tx in batch_iter(y, tx, batch_size):
@@ -56,7 +59,7 @@ def stochastic_gradient_descent(
 
 
 def stochastic_subgradient_descent(
-        y, tx, initial_w, batch_size, max_iters, gamma):
+        y, tx, initial_w, batch_size, max_iters, ratio = 0.7):
     """Stochastic subgradient descent algorithm. Uses MAE loss function.
     
     Parameters
@@ -69,8 +72,8 @@ def stochastic_subgradient_descent(
         Array containing the regression parameters to start from.
     max_iters: int
         The maximum number of iterations to be done.
-    gamma: float
-        The stepsize of the SGD
+    ratio: float
+        The ratio at wich the stepsize converges (0.5 - 1.0), default = 0.7.
 
     Returns
     -------
@@ -84,6 +87,9 @@ def stochastic_subgradient_descent(
     losses = []
     w = initial_w
     for n_iter in range(max_iters):
+
+        # Calculate gamma (Robbins-Monroe condition)
+        gamma = 1 / pow(n_iter + 1, ratio)
 
         # Create the batch
         for minibatch_y, minibatch_tx in batch_iter(y, tx, batch_size):
