@@ -4,7 +4,7 @@
 import numpy as np
 
 
-def batch_iter(y: np.ndarray, tx: np.ndarray, batch_size: int, num_batches=1, shuffle=True) -> iter:
+def batch_iter(y: np.ndarray, tx: np.ndarray, batch_size: int, num_batches: int = 1, shuffle: bool = True) -> iter:
     """
     Generate a minibatch iterator for a dataset.
     Takes as input two iterables (here the output desired values 'y' and the input data 'tx')
