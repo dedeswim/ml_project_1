@@ -24,7 +24,7 @@ def gradient_descent(y: ndarray, tx: ndarray, initial_w: ndarray, max_iters: int
 
     Returns
     -------
-    losses, ws: ndarray, ndarray:
+    losses, ws: ndarray, ndarray
         Array containing the losses using the different ws found with the GD,
         Array containing the regression parameters found with the GD.
     """

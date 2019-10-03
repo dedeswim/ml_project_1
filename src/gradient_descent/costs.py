@@ -4,8 +4,20 @@
 import numpy as np
 
 
-def compute_loss(y, tx, w):
-    """Calculate the loss using MSE.
+def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray) -> float:
+    """Calculate the loss using MSE for linear regression.
+
+    y: ndarray
+        Array that contains the correct values to be predicted.
+    tx: ndarray
+        Matrix that contains the data points. The first column is made of 1s.
+    w: ndarray
+        Array containing the regression parameters to test.
+
+    Returns
+    -------
+    loss: float
+        The loss for the given regression parameters.
     """
     e = y - tx.dot(w)
     n = y.shape[0]
@@ -14,7 +26,19 @@ def compute_loss(y, tx, w):
 
 
 def compute_loss_mae(y, tx, w):
-    """Calculate the loss using MAE.
+    """Calculate the loss using MAE for linear regression.
+
+    y: ndarray
+        Array that contains the correct values to be predicted.
+    tx: ndarray
+        Matrix that contains the data points. The first column is made of 1s.
+    w: ndarray
+        Array containing the regression parameters to test.
+
+    Returns
+    -------
+    loss: float
+        The loss for the given regression parameters.
     """
 
     e = y - tx.dot(w)
