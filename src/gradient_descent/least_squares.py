@@ -1,3 +1,4 @@
+import numpy as np
 from costs import compute_loss
 
 def least_squares(y, tx):

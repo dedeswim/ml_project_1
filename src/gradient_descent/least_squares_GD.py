@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Gradient Descent"""
 
-from costs import compute_loss, compute_loss_mae
+from costs import compute_loss
 from gradient import compute_subgradient, compute_gradient
 import numpy as np
 
@@ -74,7 +74,7 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, ma
     for n_iter in range(max_iters):
         # Compute gradient and loss
         gradient = compute_subgradient(y, tx, w)
-        loss = compute_loss_mae(y, tx, w)
+        loss = compute_loss(y, tx, w, "mae")
 
         # Update w by gradient
         w = w - gamma * gradient
