@@ -5,6 +5,7 @@ TODO: (-: not done, +: done)
 - create a correlation matrix
 - ...?
 - create first dataset without not meaningful and correlated features
+- add unit tests?
 
 [2019-10-10]
 
