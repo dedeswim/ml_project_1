@@ -6,7 +6,4 @@ The packages used to get the project up and running are listed in requirements.t
 
 ```shell
 pip install --user --requirement requirements.txt
-
-
-
 ```
