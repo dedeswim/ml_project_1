@@ -7,3 +7,5 @@ The packages used to get the project up and running are listed in requirements.t
 ```shell
 pip install --user --requirement requirements.txt
 ```
+
+Overleaf containing the LaTex report for the Project: https://www.overleaf.com/project/5d9efa0c65fb98000163917d
