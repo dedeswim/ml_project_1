@@ -35,9 +35,8 @@ def stochastic_gradient_descent(
     """
 
     # Define parameters to store w and loss
-    ws = [initial_w]
-    losses = []
     w = initial_w
+    loss = 0
     for n_iter in range(max_iters):
         
         # Calculate gamma (Robbins-Monroe condition)
@@ -52,13 +51,10 @@ def stochastic_gradient_descent(
         # Update w by gradient
         w = w - gamma * gradient
 
-        # store w and loss
-        ws.append(w)
-        losses.append(loss)
         print("Stochastic Gradient Descent({bi}/{ti}): loss={ls}, w0={w0}, w1={w1}".format(
             bi=n_iter, ti=max_iters - 1, ls=loss, w0=w[0], w1=w[1]))
 
-    return losses, ws
+    return loss, w
 
 
 def stochastic_subgradient_descent(
@@ -88,8 +84,8 @@ def stochastic_subgradient_descent(
     """
 
     # Define parameters to store w and loss
-    ws = [initial_w]
-    losses = []
+    ws = initial_w
+    loss = 0
     w = initial_w
     for n_iter in range(max_iters):
 
@@ -105,10 +101,7 @@ def stochastic_subgradient_descent(
         # Update w by gradient
         w = w - gamma * subgradient
 
-        # store w and loss
-        ws.append(w)
-        losses.append(loss)
         print("Stochastic Subgradient Descent({bi}/{ti}): loss={ls}, w0={w0}, w1={w1}".format(
             bi=n_iter, ti=max_iters - 1, ls=loss, w0=w[0], w1=w[1]))
 
-    return losses, ws
+    return loss, w

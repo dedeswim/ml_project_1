@@ -6,7 +6,7 @@ from gradient import compute_subgradient, compute_gradient
 import numpy as np
 
 
-def gradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: float) -> tuple:
+def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: float) -> tuple:
     """Gradient descent algorithm. Uses MSE loss function.
 
     Parameters
@@ -30,9 +30,8 @@ def gradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_i
     """
 
     # Define parameters to store w and loss
-    ws = [initial_w]
-    losses = []
     w = initial_w
+    loss = 0
     for n_iter in range(max_iters):
         # Compute gradient and loss
         gradient = compute_gradient(y, tx, w)
@@ -41,13 +40,10 @@ def gradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_i
         # Update w by gradient
         w = w - gamma * gradient
 
-        # store w and loss
-        ws.append(w)
-        losses.append(loss)
         print("Gradient Descent({bi}/{ti}): loss={ls}, w0={w0}, w1={w1}".format(
             bi=n_iter, ti=max_iters - 1, ls=loss, w0=w[0], w1=w[1]))
 
-    return losses, ws
+    return loss, w
 
 
 def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: int) -> tuple:
@@ -73,9 +69,8 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, ma
         Array containing the regression parameters found with the GD.
     """
     # Define parameters to store w and loss
-    ws = [initial_w]
-    losses = []
     w = initial_w
+    loss = 0
     for n_iter in range(max_iters):
         # Compute gradient and loss
         gradient = compute_subgradient(y, tx, w)
@@ -84,10 +79,7 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, ma
         # Update w by gradient
         w = w - gamma * gradient
 
-        # store w and loss
-        ws.append(w)
-        losses.append(loss)
         print("Gradient Descent({bi}/{ti}): loss={ls}, w0={w0}, w1={w1}".format(
             bi=n_iter, ti=max_iters - 1, ls=loss, w0=w[0], w1=w[1]))
 
-    return losses, ws
+    return loss, w
