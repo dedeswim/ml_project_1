@@ -18,7 +18,7 @@ Then, if missing values have a correlation across features (for all rows, the mi
 we can proceed like this:
 
 1) we decide what "non meaningful" means (e.g. % of missing values > 5%) (we should also check the description of features for
-this, can be found in [documentation_v1.8.pdf](documentation_v1.8.pdf')
+this, can be found in [documentation_v1.8.pdf](documentation_v1.8.pdf)
 2) we create two datasets:
     - one with not meaningful features stripped away, and with only datapoints without missing values
     - one with [all/only non meaningful?] features, and with only datapoints without missing values
