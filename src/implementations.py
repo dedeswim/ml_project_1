@@ -1,11 +1,14 @@
+from typing import Tuple
+
 import numpy as np
 
-from costs import compute_loss
-from gradient import compute_gradient, compute_subgradient
-from helpers import batch_iter
+from src.costs import compute_loss
+from src.gradient import compute_gradient, compute_subgradient
+from src.helpers import batch_iter
 
 
-def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: float) -> tuple:
+def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: float) -> \
+        Tuple[float, np.ndarray]:
     """Gradient descent algorithm. Uses MSE loss function.
 
     Parameters
@@ -45,7 +48,8 @@ def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_i
     return loss, w
 
 
-def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: int) -> tuple:
+def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: int) -> \
+        Tuple[float, np.ndarray]:
     """Subgradient descent algorithm. Uses MAE loss function.
 
     Parameters
@@ -86,7 +90,7 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, ma
 
 def stochastic_gradient_descent(
         y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int,
-        ratio: float = 0.7) -> tuple:
+        ratio: float = 0.7) -> Tuple[float, np.ndarray]:
     """Stochastic gradient descent algorithm. Uses MSE loss function.
 
     Parameters
@@ -137,7 +141,7 @@ def stochastic_gradient_descent(
 
 def stochastic_subgradient_descent(
         y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int,
-        ratio: float = 0.7) -> tuple:
+        ratio: float = 0.7) -> Tuple[float, np.ndarray]:
     """Stochastic subgradient descent algorithm. Uses MAE loss function.
 
     Parameters
@@ -185,7 +189,7 @@ def stochastic_subgradient_descent(
     return loss, w
 
 
-def least_squares(y, tx):
+def least_squares(y: np.ndarray, tx: np.ndarray) -> Tuple[float, np.ndarray]:
     """Computes the least squares solution.
     
     Parameters
@@ -207,7 +211,7 @@ def least_squares(y, tx):
     return loss, w
 
 
-def ridge_regression(y, tx, lambda_):
+def ridge_regression(y: np.ndarray, tx: np.ndarray, lambda_: float) -> Tuple[float, np.ndarray]:
     """Computes ridge regression with the given `lambda_`.
 
     Parameters
@@ -216,7 +220,7 @@ def ridge_regression(y, tx, lambda_):
         Array that contains the correct values to be predicted.
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    lambda_: int
+    lambda_: float
         Lambda regularization parameter
 
 
