@@ -126,3 +126,5 @@ dmypy.json
 # Ignore data folder
 data/
 .idea/
+
+.theia/
