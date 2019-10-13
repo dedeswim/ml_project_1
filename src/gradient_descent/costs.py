@@ -3,6 +3,7 @@
 
 import numpy as np
 
+
 def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") -> float:
     """
     Calculate the loss using either MSA or MAE for linear regression.

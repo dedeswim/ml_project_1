@@ -1,7 +1,9 @@
+import numpy as np
+
 from costs import compute_loss
 from gradient import compute_gradient, compute_subgradient
 from helpers import batch_iter
-import numpy as np
+
 
 def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int, gamma: float) -> tuple:
     """Gradient descent algorithm. Uses MSE loss function.
@@ -21,8 +23,8 @@ def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_i
 
     Returns
     -------
-    losses, ws: ndarray, ndarray
-        Array containing the losses using the different ws found with the GD,
+    loss, w: float, ndarray
+        The loss given by the final w parameters,
         Array containing the regression parameters found with the GD.
     """
 
@@ -61,8 +63,8 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, ma
 
     Returns
     -------
-    losses, ws: ndarray, ndarray:
-        Array containing the losses using the different ws found with the GD,
+    loss, w: float, ndarray:
+        The loss given by the final w parameters,
         Array containing the regression parameters found with the GD.
     """
     # Define parameters to store w and loss
@@ -83,7 +85,8 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, ma
 
 
 def stochastic_gradient_descent(
-        y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int, ratio: float = 0.7) -> tuple:
+        y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int,
+        ratio: float = 0.7) -> tuple:
     """Stochastic gradient descent algorithm. Uses MSE loss function.
 
     Parameters
@@ -99,12 +102,12 @@ def stochastic_gradient_descent(
     max_iters: int
         The maximum number of iterations to be done.
     ratio: float
-        The ratio at wich the stepsize converges (0.5 - 1.0), default = 0.7.
+        The ratio at which the stepsize converges (0.5 - 1.0), default = 0.7.
 
     Returns
     -------
-    losses, ws: ndarray, ndarray
-        Array containing the losses using the different ws found with the SGD,
+    loss, w: float, ndarray
+        The loss given by the final w parameters,
         Array containing the regression parameters found with the SGD.
 
     """
@@ -133,7 +136,8 @@ def stochastic_gradient_descent(
 
 
 def stochastic_subgradient_descent(
-        y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int, ratio: float = 0.7) -> tuple:
+        y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int,
+        ratio: float = 0.7) -> tuple:
     """Stochastic subgradient descent algorithm. Uses MAE loss function.
 
     Parameters
@@ -153,8 +157,8 @@ def stochastic_subgradient_descent(
 
     Returns
     -------
-    losses, ws: ndarray, ndarray:
-        Array containing the losses using the different ws found with the SGD,
+    loss, w: float, ndarray:
+        The loss given by the final w parameters,
         Array containing the regression parameters found with the SGD.
     """
 
@@ -180,20 +184,52 @@ def stochastic_subgradient_descent(
 
     return loss, w
 
+
 def least_squares(y, tx):
-    """calculate the least squares solution."""
+    """Computes the least squares solution.
+    
+    Parameters
+    ----------
+    y: ndarray
+        Array that contains the correct values to be predicted.
+    tx: ndarray
+        Matrix that contains the data points. The first column is made of 1s.
+    Returns
+    -------
+    loss, w: float, ndarray
+        The loss given by the final w parameters,
+        Array containing the regression parameters found with the GD.
+    """
 
     w = np.linalg.solve(tx.T.dot(tx), tx.T.dot(y))
-    mse = compute_loss(y, tx, w, "mse")
+    loss = compute_loss(y, tx, w, "mse")
 
-    return w, mse
+    return loss, w
+
 
 def ridge_regression(y, tx, lambda_):
-    """implement ridge regression."""
+    """Computes ridge regression with the given `lambda_`.
+
+    Parameters
+    ----------
+    y: ndarray
+        Array that contains the correct values to be predicted.
+    tx: ndarray
+        Matrix that contains the data points. The first column is made of 1s.
+    lambda_: int
+        Lambda regularization parameter
+
+
+    Returns
+    -------
+    loss, w: float, ndarray
+        The loss given by the final w parameters,
+        Array containing the regression parameters found with the GD.
+    """
 
     lambda_p = lambda_ * 2 * tx.shape[0]
 
-    w_ridge = np.linalg.solve(tx.T.dot(tx) + lambda_p * np.eye(tx.shape[1]), tx.T.dot(y))
-    mse = compute_loss(y, tx, w_ridge)
+    w = np.linalg.solve(tx.T.dot(tx) + lambda_p * np.eye(tx.shape[1]), tx.T.dot(y))
+    loss = compute_loss(y, tx, w)
 
-    return mse, w_ridge
+    return loss, w
