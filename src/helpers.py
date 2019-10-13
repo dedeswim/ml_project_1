@@ -3,7 +3,6 @@
 
 import csv
 from typing import Iterable, Tuple
-
 import numpy as np
 
 

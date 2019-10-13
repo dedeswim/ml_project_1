@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Contains a function to split data sets between training and test sets"""
-from typing import Tuple
 
+from typing import Tuple
 import numpy as np
 
 
