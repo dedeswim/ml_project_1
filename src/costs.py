@@ -25,4 +25,4 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") 
 
     assert cf == "mse" or cf == "mae", "Argument 'cf' must be either 'mse' or 'mae'"
     e = y - tx.dot(w)
-    return e.dot(e) / (2 * len(e)) / 2 if cf == "mse" else np.mean(np.abs(e))
+    return e.T.dot(e) / (2 * len(e)) if cf == "mse" else np.mean(np.abs(e))
