@@ -2,12 +2,20 @@
 
 TODO:
 
-- [ ] understand features meaning
-- [ ] decide features meaningfulness
-- [ ] create a correlation matrix
-- [ ] create first dataset without not meaningful and correlated features
+- [x] normalize the dataset
+- [ ] understand features meaning (@edoardo 18/10)
+- [ ] decide features meaningfulness (@all 20/10)
+- [ ] create a correlation matrix (@davide 17/10)
+- [ ] create first dataset without not meaningful and correlated features (@all 20/10)
 - [ ] add unit tests (?)
-- [ ] normalize the dataset
+- [ ] create logistic regression functions (@edoardo 20/10)
+- [ ] try classification with linear regression (@mari 20/10)
+- [ ] complete documentation:
+  - [ ] load_csv_data
+  - [ ] standardize
+  - [ ] predict_labels
+  - [ ] create_csv_submission
+- [ ] add assertions around, to be sure to use the functions correctly
 
 ## 2019-10-10
 
