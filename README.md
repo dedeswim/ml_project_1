@@ -5,7 +5,7 @@ Repository containing the code for the [Project 1](https://github.com/epfml/ML_c
 The team (SchroedingerCats) is composed by:
 
 - Edoardo Debenedetti (@dedeswim)
-- Mari Sofie Lerfaldet (@marisofi)
+- Mari Sofie Lerfaldet (@marisofie)
 - Davide Nanni (@DSAureli)
 
 The packages used to get the project up and running are listed in requirements.txt, and can be installed with:
