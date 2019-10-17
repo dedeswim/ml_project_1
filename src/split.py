@@ -21,28 +21,21 @@ def split_data(x: np.ndarray, y: np.ndarray, ratio: float, seed: float = 1) -> \
     ratio: float
         The ratio between the number of wanted training data points and the total number of data points
     seed: float
+
+    Returns
+    -------
+    x_train, y_train, x_test, y_test : ndarray
     """
     # Set seed
     np.random.seed(seed)
 
-    # Get the training set size
-    train_size = round(x.shape[0] * ratio)
-    # Get an array containing all the indexes of the arrays
-    indexes = np.arange(x.shape[0])
-    # Shuffle the indexes
-    np.random.shuffle(indexes)
+    # Randomly choose indexes of train set
+    data_len = x.shape[0]
+    idxs = np.random.choice(data_len, size=round(data_len*ratio), replace=False)
 
-    # Get the number of wanted indexes from the shuffled ones
-    train_indexes = indexes[:train_size]
-    # Get the other indexes using set difference
-    test_indexes = np.setdiff1d(indexes, train_indexes)
-
-    # Create training set
-    x_train = x[train_indexes]
-    y_train = y[train_indexes]
-
-    # Create test set
-    x_test = x[test_indexes]
-    y_test = y[test_indexes]
-
-    return x_train, x_test, y_train, y_test
+    # Create a mask from indexes
+    mask = np.zeros(data_len, dtype=bool)
+    mask[idxs] = True
+    
+    #      x_train  y_train  x_test    y_test
+    return x[mask], y[mask], x[~mask], y[~mask]
