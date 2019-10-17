@@ -9,7 +9,7 @@ def build_poly_matrix(x, degree):
     repeated_x = np.tile(x, repetitions)
     powers = np.mgrid[0:repeated_x.shape[0], 0:repeated_x.shape[1], 0:repeated_x.shape[2]][0]
     
-    return np.power(repeated_x, powers)
+    return np.power(repeated_x, powers).flatten().reshape(-1 , x.shape[1] * (degree + 1))
 
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
