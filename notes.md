@@ -8,7 +8,7 @@ TODO:
 - [ ] create a correlation matrix (@davide 17/10)
 - [ ] create first dataset without not meaningful and correlated features (@all 20/10)
 - [ ] add unit tests (?)
-- [ ] create logistic regression functions (@edoardo 20/10)
+- [x] create logistic regression functions (@edoardo 20/10)
 - [ ] try classification with linear regression (@mari 20/10)
 - [ ] complete documentation:
   - [ ] load_csv_data
