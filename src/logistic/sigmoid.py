@@ -7,12 +7,12 @@ def sigmoid(t: [float | np.ndarray]) -> [float | np.ndarray]:
     
     Parameters
     ----------
-    y: float | ndarray
+    y: float or ndarray
         Float or array onto which the sigmoid needs to be applied.
 
     Returns
     -------
-    s(t): float | ndarray
+    s(t): float or ndarray
         Float or array to which the sigmoid function has been applied.
     """
 

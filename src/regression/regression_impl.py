@@ -9,26 +9,33 @@ from src.helpers import batch_iter
 
 def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, 
         max_iters: int, gamma: float) -> Tuple[float, np.ndarray]:
-    """Gradient descent algorithm. Uses MSE loss function.
+    """
+    Gradient descent algorithm. Uses MSE loss function.
 
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
+    
     initial_w: ndarray
         Array containing the regression parameters to start from.
+    
     max_iters: int
         The maximum number of iterations to be done.
+    
     gamma: float
         The stepsize of the GD
 
     Returns
     -------
-    loss, w: float, ndarray
-        The loss given by the final w parameters,
-        Array containing the regression parameters found with the GD.
+    w: np.ndarray
+        The regression parameters.
+    
+    loss: float
+        The loss given w as parameters.
     """
 
     # Define parameters to store w and loss
@@ -49,29 +56,36 @@ def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
 
 def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         batch_size: int, max_iters: int, ratio: float = 0.7) -> Tuple[float, np.ndarray]:
-    """Stochastic gradient descent algorithm. Uses MSE loss function.
+    """
+    Stochastic gradient descent algorithm. Uses MSE loss function.
 
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
+    
     initial_w: ndarray
         Array containing the regression parameters to start from.
+    
     batch_size: int
         The size of the batches to be created.
+    
     max_iters: int
         The maximum number of iterations to be done.
+    
     ratio: float
         The ratio at which the stepsize converges (0.5 - 1.0), default = 0.7.
 
     Returns
     -------
-    loss, w: float, ndarray
-        The loss given by the final w parameters,
-        Array containing the regression parameters found with the SGD.
-
+    w: np.ndarray
+        The regression parameters.
+    
+    loss: float
+        The loss given w as parameters.
     """
 
     # Define parameters to store w and loss
@@ -97,19 +111,23 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     return loss, w
 
 def least_squares(y: np.ndarray, tx: np.ndarray) -> Tuple[float, np.ndarray]:
-    """Computes the least squares solution.
+    """
+    Computes the least squares solution.
     
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
     Returns
     -------
-    loss, w: float, ndarray
-        The loss given by the final w parameters,
-        Array containing the regression parameters found with the GD.
+    w: np.ndarray
+        The regression parameters.
+    
+    loss: float
+        The loss given w as parameters.
     """
 
     w = np.linalg.solve(tx.T.dot(tx), tx.T.dot(y))
@@ -119,23 +137,28 @@ def least_squares(y: np.ndarray, tx: np.ndarray) -> Tuple[float, np.ndarray]:
 
 
 def ridge_regression(y: np.ndarray, tx: np.ndarray, lambda_: float) -> Tuple[float, np.ndarray]:
-    """Computes ridge regression with the given `lambda_`.
+    """
+    Computes ridge regression with the given `lambda_`.
 
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
+    
     lambda_: float
         Lambda regularization parameter
 
 
     Returns
     -------
-    loss, w: float, ndarray
-        The loss given by the final w parameters,
-        Array containing the regression parameters found with the GD.
+    w: np.ndarray
+        The regression parameters.
+    
+    loss: float
+        The loss given w as parameters.
     """
 
     lambda_p = lambda_ * 2 * tx.shape[0]

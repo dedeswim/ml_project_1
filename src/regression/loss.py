@@ -10,10 +10,13 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") 
 
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
+    
     w: ndarray
         Array containing the regression parameters to test.
+    
     cf: str
         String indicating which cost function to use; "mse" (default) or "mae".
 

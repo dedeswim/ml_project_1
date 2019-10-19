@@ -8,26 +8,33 @@ from src.helpers import batch_iter
 
 def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         max_iters: int, gamma: int) -> Tuple[float, np.ndarray]:
-    """Subgradient descent algorithm. Uses MAE loss function.
+    """
+    Subgradient descent algorithm. Uses MAE loss function.
 
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
+    
     initial_w: ndarray
         Array containing the regression parameters to start from.
+    
     max_iters: int
         The maximum number of iterations to be done.
+    
     gamma: float
         The stepsize of the GD
 
     Returns
     -------
-    loss, w: float, ndarray:
-        The loss given by the final w parameters,
-        Array containing the regression parameters found with the GD.
+    w: np.ndarray
+        The regression parameters.
+    
+    loss: float
+        The loss given w as parameters.
     """
     # Define parameters to store w and loss
     w = initial_w
@@ -48,28 +55,36 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
 def stochastic_subgradient_descent(
         y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int,
         ratio: float = 0.7) -> Tuple[float, np.ndarray]:
-    """Stochastic subgradient descent algorithm. Uses MAE loss function.
+    """
+    Stochastic subgradient descent algorithm. Uses MAE loss function.
 
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
+    
     initial_w: ndarray
         Array containing the regression parameters to start from.
+    
     batch_size: int
         Other size of the batches.
+    
     max_iters: int
         The maximum number of iterations to be done.
+    
     ratio: float
         The ratio at wich the stepsize converges (0.5 - 1.0), default = 0.7.
 
     Returns
     -------
-    loss, w: float, ndarray:
-        The loss given by the final w parameters,
-        Array containing the regression parameters found with the SGD.
+    w: np.ndarray
+        The regression parameters.
+    
+    loss: float
+        The loss given w as parameters.
     """
 
     # Define parameters to store w and loss

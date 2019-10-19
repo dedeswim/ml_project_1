@@ -16,11 +16,16 @@ def split_data(x: np.ndarray, y: np.ndarray, ratio: float, seed: float = 1) -> \
     ----------
     x : np.ndarray
         The array containing the features.
+    
     y : np.ndarray
         The array containing the targets
+    
     ratio: float
-        The ratio between the number of wanted training data points and the total number of data points
+        The ratio between the number of wanted training data points and
+        the total number of data points.
+
     seed: float
+        The seed with which the random generator is initialized.
 
     Returns
     -------

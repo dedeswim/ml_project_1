@@ -14,21 +14,29 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
+    
     lambda_: float
         The lambda used for regularization. Default behavior is without regularization.
+    
     initial_w: ndarray
         Array containing the regression parameters to start with.
+    
     max_iters: int
         The maximum number of iterations to do.
+    
     gamma: float
         Gradient descent stepsize
 
     Returns
     -------
-    w, loss: np.ndarray, float
-        The regression parameters and their loss.
+    w: np.ndarray
+        The regression parameters.
+    
+    loss: float
+        The loss given w as parameters.
     """
 
     # init parameters
@@ -62,19 +70,26 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
+    
     initial_w: ndarray
         Array containing the regression parameters to start with.
+    
     max_iters: int
         The maximum number of iterations to do.
+    
     gamma: float
         Gradient descent stepsize
 
     Returns
     -------
-    w, loss: np.ndarray, float
-        The regression parameters and their loss.
+    w: np.ndarray
+        The regression parameters.
+    
+    loss: float
+        The loss given w as parameters.
     """
 
     return reg_logistic_regression(y, tx, 0, initial_w, max_iters, gamma)
@@ -88,17 +103,23 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma:np
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
+    
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
+    
     w: ndarray
         Array containing the regression parameters to test.
+    
     lambda_: float
         The lambda used for regularization. Default behavior is without regularization.
 
     Returns
     -------
-    loss, w: float, np.ndarray
-        The loss and the updated w.
+    w: np.ndarray
+        The regression parameters.
+    
+    loss: float
+        The loss given w as parameters.
     """
     # Get loss, gradient, hessian
     loss = compute_loss(y, tx, w, lambda_=lambda_)
