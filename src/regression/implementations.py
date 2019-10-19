@@ -4,7 +4,6 @@ import numpy as np
 
 from src.regression.loss import compute_loss
 from src.regression.gradient import compute_gradient
-from src.helpers import batch_iter
 
 
 def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, 
@@ -96,11 +95,8 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         # Calculate gamma (Robbins-Monroe condition)
         gamma = 1 / pow(n_iter + 1, ratio)
 
-        # Create the batch
-        for minibatch_y, minibatch_tx in batch_iter(y, tx, batch_size):
-            # Compute gradient and loss
-            gradient = compute_gradient(minibatch_y, minibatch_tx, w)
-            loss = compute_loss(minibatch_y, minibatch_tx, w)
+        gradient = compute_gradient(y, tx, w)
+        loss = compute_loss(y, tx, w)
 
         # Update w by gradient
         w = w - gamma * gradient
@@ -131,7 +127,7 @@ def least_squares(y: np.ndarray, tx: np.ndarray) -> Tuple[float, np.ndarray]:
     """
 
     w = np.linalg.solve(tx.T.dot(tx), tx.T.dot(y))
-    loss = compute_loss(y, tx, w, "mse")
+    loss = compute_loss(y, tx, w)
 
     return loss, w
 

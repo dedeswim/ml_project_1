@@ -25,9 +25,13 @@ def compute_hessian(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float
         The hessian for the given logistic regression parameters.
     """
     
+    # Compute the sigmoid of the x.w vector
     sigmoid_txw = sigmoid(tx.dot(w)).reshape((tx.shape[0],1))
+
+    # Find the S diagonal matrix
     S = np.diag(np.diag(sigmoid_txw.dot((1 - sigmoid_txw).T)))
     
+    # Compute regularizer component (if lambda != 0)
     regularizer = lambda_ * np.eye(w.shape[0]) if lambda_ else 0
     
     return tx.T.dot(S).dot(tx)

@@ -26,6 +26,10 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") 
         The loss for the given regression parameters.
     """
 
+    # Check whether the mode parameter is valid
     assert cf == "mse" or cf == "mae", "Argument 'cf' must be either 'mse' or 'mae'"
+    
+    # Create the error vector (i.e. yn - the predicted n-th value)
     e = y - tx.dot(w)
+
     return e.T.dot(e) / (2 * len(e)) if cf == "mse" else np.mean(np.abs(e))
