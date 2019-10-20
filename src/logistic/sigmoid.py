@@ -1,7 +1,7 @@
 import numpy as np
-from src.logistic.sigmoid import sigmoid
+from typing import Union
 
-def sigmoid(t: [float | np.ndarray]) -> [float | np.ndarray]:
+def sigmoid(t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     """
     Element-wise applies sigmoid function on t.
     
