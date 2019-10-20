@@ -2,20 +2,23 @@
 
 TODO:
 
-- [x] normalize the dataset
+- [ ] create branches for different ML models
+- [ ] add cross validation functions
+- [ ] implement working polynomial augmentation functions
 - [ ] understand features meaning (@edoardo 18/10)
 - [ ] decide features meaningfulness (@all 20/10)
 - [ ] create a correlation matrix (@davide 17/10)
 - [ ] create first dataset without not meaningful and correlated features (@all 20/10)
 - [ ] add unit tests (?)
-- [x] create logistic regression functions (@edoardo 20/10)
 - [ ] try classification with linear regression (@mari 20/10)
-- [ ] complete documentation:
-  - [ ] load_csv_data
-  - [ ] standardize
-  - [ ] predict_labels
-  - [ ] create_csv_submission
 - [ ] add assertions around, to be sure to use the functions correctly
+- [x] create logistic regression functions (@edoardo 20/10)
+- [x] normalize the dataset
+- [x] complete documentation:
+  - [x] load_csv_data
+  - [x] standardize
+  - [x] predict_labels
+  - [x] create_csv_submission
 
 ## 2019-10-10
 
