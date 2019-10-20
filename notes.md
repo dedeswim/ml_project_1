@@ -5,7 +5,7 @@ TODO:
 - [x] normalize the dataset
 - [ ] understand features meaning (@edoardo 18/10)
 - [ ] decide features meaningfulness (@all 20/10)
-- [ ] create a correlation matrix (@davide 17/10)
+- [x] create the correlation matrix (@davide 17/10)
 - [ ] create first dataset without not meaningful and correlated features (@all 20/10)
 - [ ] add unit tests (?)
 - [x] create logistic regression functions (@edoardo 20/10)
