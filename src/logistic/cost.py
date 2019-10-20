@@ -1,5 +1,5 @@
 import numpy as np
-from src.logistic.sigmoid import sigmoid
+from logistic.sigmoid import sigmoid
 
 def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 0)-> float:
     """"

@@ -2,8 +2,8 @@ from typing import Tuple
 
 import numpy as np
 
-from src.regression.loss import compute_loss
-from src.regression.gradient import compute_gradient
+from regression.loss import compute_loss
+from regression.gradient import compute_gradient
 
 
 def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, 

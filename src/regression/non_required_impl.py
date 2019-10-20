@@ -2,9 +2,9 @@ from typing import Tuple
 
 import numpy as np
 
-from src.regression.loss import compute_loss
-from src.regression.gradient import compute_subgradient
-from src.helpers import batch_iter
+from regression.loss import compute_loss
+from regression.gradient import compute_subgradient
+from helpers import batch_iter
 
 def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         max_iters: int, gamma: int) -> Tuple[float, np.ndarray]:
