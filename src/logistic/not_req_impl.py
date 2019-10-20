@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Tuple
 
-from src.logistic.loss import compute_loss
+from src.logistic.cost import compute_loss
 from src.logistic.gradient import compute_gradient
 from src.logistic.hessian import compute_hessian
 
@@ -47,14 +47,12 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
     # start the logistic regression
     for iter in range(max_iters):
         # get loss and update w.
-        loss, gradient, w = gradient_descent_step(y, tx, w, gamma, lambda_)
+        loss, w = gradient_descent_step(y, tx, w, gamma, lambda_)
         # log info
-        if iter % 10000 == 0:
+        if iter % 100 == 0:
             print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
-            print("||d|| = {d}".format(d=np.linalg.norm(gradient)))
         # converge criterion
         losses.append(loss)
-        # print("Current iteration={i}, loss={l}, ||d|| = {d}".format(i=iter, l=loss, d=np.linalg.norm(gradient)))
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
     
@@ -66,7 +64,7 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
 def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         max_iters: int, gamma: float) -> Tuple[np.ndarray, float]:
     """
-    Computes the parameters for the logistic regression.
+    Does the logistic regression.
     
     Parameters
     ----------
@@ -96,10 +94,10 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
 
     return reg_logistic_regression(y, tx, 0, initial_w, max_iters, gamma)
 
-def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: float,
-        lambda_: float = 0) -> Tuple[float, np.ndarray, np.ndarray]:
+def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma:np.ndarray,
+        lambda_: float = 0) -> Tuple[float, np.ndarray]:
     """
-    Computes one step of gradient descent.
+    Does one step of gradient descent.
     
     Parameters
     ----------
@@ -111,9 +109,6 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: f
     
     w: ndarray
         Array containing the regression parameters to test.
-    
-    gamma: float
-        The stepsize.
     
     lambda_: float
         The lambda used for regularization. Default behavior is without regularization.
@@ -129,10 +124,11 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: f
     # Get loss, gradient, hessian
     loss = compute_loss(y, tx, w, lambda_=lambda_)
     gradient = compute_gradient(y, tx, w, lambda_=lambda_)
+    hessian = compute_hessian(y, tx, w, lambda_=lambda_)
 
     # Update w
-    w = w - gamma * gradient
+    w = w - gamma * (np.linalg.inv(hessian)).dot(gradient)
     
-    return loss, gradient, w
+    return loss, w
 
     

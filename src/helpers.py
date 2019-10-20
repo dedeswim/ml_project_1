@@ -5,7 +5,7 @@ import csv
 from typing import Iterable, Tuple, List
 import numpy as np
 
-def load_csv_data(data_path: str, sub_sample: bool = False) \
+def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000) \
         -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Loads data and returns y (class labels), tX (features) and ids (event ids).
@@ -37,14 +37,14 @@ def load_csv_data(data_path: str, sub_sample: bool = False) \
     input_data = x[:, 2:]
 
     # convert class labels from strings to binary (-1,1)
-    yb = np.ones(len(y))
+    yb = np.ones((len(y), 1))
     yb[np.where(y == 'b')] = -1
 
     # sub-sample
     if sub_sample:
-        yb = yb[::50]
-        input_data = input_data[::50]
-        ids = ids[::50]
+        yb = yb[::sub_sample_size]
+        input_data = input_data[::sub_sample_size]
+        ids = ids[::sub_sample_size]
 
     return yb, input_data, ids
 
@@ -75,7 +75,7 @@ def standardize(x: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     return x, mean_x, std_x
 
 
-def predict_labels(weights: np.ndarray, data: np.ndarray) -> np.ndarray:
+def predict_labels(weights: np.ndarray, data: np.ndarray, mode="logistic") -> np.ndarray:
     """
     Generates class predictions given weights, and a test data matrix.
 
@@ -92,9 +92,11 @@ def predict_labels(weights: np.ndarray, data: np.ndarray) -> np.ndarray:
     y_pred: np.ndarray
         The predicted labels.    
     """
+    assert mode == "logistic" or "linear", "The model should be either logistic or linear"
+    bound = 0 if mode == "linear" else 0.5
     y_pred = np.dot(data, weights)
-    y_pred[np.where(y_pred <= 0)] = -1
-    y_pred[np.where(y_pred > 0)] = 1
+    y_pred[np.where(y_pred <= bound)] = -1
+    y_pred[np.where(y_pred > bound)] = 1
 
     return y_pred
 
@@ -122,13 +124,44 @@ def create_csv_submission(ids: np.ndarray, y_pred: np.ndarray, name: str) -> Non
             writer.writerow({'Id': int(r1), 'Prediction': int(r2)})
             
 def remove_columns(x: np.ndarray, threshold: float = 0.30) -> np.ndarray:
-    total_rows = x.shape[0]
-    vect_missing_values = np.vectorize(count_missing_values)
-    return [np.where(vect_missing_values(x.T) / total_rows) < threshold].T    
+    """
+    Removes the columns that have more than threshold% missing values.
+    
+    Arguments
+    ---------
+    x: np.ndarray
+        The matrix to be cleaned.
+    
+    threshold: float
+        The maximum percentage of missing data. The default one is 30%.
+    
+    Returns
+    -------
+    clean_x: np.ndarray
+        The cleaned matrix. 
+    """
+    
+    to_keep = np.apply_along_axis(count_missing_values, 0, x, [threshold]).flatten()
+        
+    return x[:, to_keep], to_keep
         
         
-def count_missing_values(column: np.ndarray) -> int:
+def count_missing_values(column: np.ndarray, threshold: float) -> bool:
     """
-    TODO: add documentation
+    Checks whether the percentage of missing values on a column is less than a given threshold.
+    
+    Parameters
+    ----------
+    x: np.ndarray
+        The columns to be checked.
+    
+    threshold: float
+        The maximum percentage of missing data.
+    
+    Returns
+    -------
+    valid: bool
+        Whether the percentage of missing values on a column is less than threshold.
     """
-    return [np.where(column == -999.0)].shape[0]
+
+    return (column == -999.0).sum() / column.shape[0] < threshold
