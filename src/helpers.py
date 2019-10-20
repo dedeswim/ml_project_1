@@ -2,7 +2,7 @@
 """Some helper functions"""
 
 import csv
-from typing import Iterable, Tuple
+from typing import Iterable, Tuple, List
 import numpy as np
 
 def load_csv_data(data_path: str, sub_sample: bool = False) \
@@ -120,3 +120,15 @@ def create_csv_submission(ids: np.ndarray, y_pred: np.ndarray, name: str) -> Non
         writer.writeheader()
         for r1, r2 in zip(ids, y_pred):
             writer.writerow({'Id': int(r1), 'Prediction': int(r2)})
+            
+def remove_columns(x: np.ndarray, threshold: float = 0.30) -> np.ndarray:
+    total_rows = x.shape[0]
+    vect_missing_values = np.vectorize(count_missing_values)
+    return [np.where(vect_missing_values(x.T) / total_rows) < threshold].T    
+        
+        
+def count_missing_values(column: np.ndarray) -> int:
+    """
+    TODO: add documentation
+    """
+    return [np.where(column == -999.0)].shape[0]

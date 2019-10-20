@@ -1,9 +1,9 @@
 import numpy as np
 from typing import Tuple
 
-from logistic.cost import compute_loss
-from logistic.gradient import compute_gradient
-from logistic.hessian import compute_hessian
+from src.logistic.cost import compute_loss
+from src.logistic.gradient import compute_gradient
+from src.logistic.hessian import compute_hessian
 
 def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float, 
         initial_w: np.ndarray, max_iters: int, gamma: float) -> Tuple[np.ndarray, float]:
