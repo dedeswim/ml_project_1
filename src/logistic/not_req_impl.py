@@ -5,8 +5,8 @@ from src.logistic.cost import compute_loss
 from src.logistic.gradient import compute_gradient
 from src.logistic.hessian import compute_hessian
 
-def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float, 
-        initial_w: np.ndarray, max_iters: int, gamma: float) -> Tuple[np.ndarray, float]:
+def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float, initial_w: np.ndarray,
+                            max_iters: int, gamma: float, method: str ='sgd') -> Tuple[np.ndarray, float]:
     """
     Does the regularized logistic regression.
     
@@ -29,6 +29,9 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
     
     gamma: float
         Gradient descent stepsize
+        
+    method: str
+        THe method for the optimization solution. Should be either SGD, Newton or GD.
 
     Returns
     -------
@@ -38,6 +41,8 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
     loss: float
         The loss given w as parameters.
     """
+    
+    assert method is in ['sgd', 'newton', 'gd'] "method should be either 'sgd', 'newton' or 'gd'"
 
     # init parameters
     threshold = 1e-8
@@ -47,7 +52,7 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
     # start the logistic regression
     for iter in range(max_iters):
         # get loss and update w.
-        loss, w = gradient_descent_step(y, tx, w, gamma, lambda_)
+        loss, w = gradient_descent_step(y, tx, w, gamma, lambda_, method=method)
         # log info
         if iter % 100 == 0:
             print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
@@ -62,7 +67,7 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
     return w, losses[-1]
 
 def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
-        max_iters: int, gamma: float) -> Tuple[np.ndarray, float]:
+        max_iters: int, gamma: float, method: str ='sgd') -> Tuple[np.ndarray, float]:
     """
     Does the logistic regression.
     
@@ -91,11 +96,13 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     loss: float
         The loss given w as parameters.
     """
+    
+    assert method is in ['sgd', 'newton', 'gd'] "method should be either 'sgd', 'newton' or 'gd'"
 
-    return reg_logistic_regression(y, tx, 0, initial_w, max_iters, gamma)
+    return reg_logistic_regression(y, tx, 0, initial_w, max_iters, gamma, method=method)
 
 def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma:np.ndarray,
-        lambda_: float = 0) -> Tuple[float, np.ndarray]:
+        lambda_: float = 0, method='sgd') -> Tuple[float, np.ndarray]:
     """
     Does one step of gradient descent.
     
@@ -121,6 +128,11 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma:np
     loss: float
         The loss given w as parameters.
     """
+    
+    assert method is in ['sgd', 'newton', 'gd'] "method should be either 'sgd', 'newton' or 'gd'"
+    
+    # TODO: implement different methods
+    
     # Get loss, gradient, hessian
     loss = compute_loss(y, tx, w, lambda_=lambda_)
     gradient = compute_gradient(y, tx, w, lambda_=lambda_)

@@ -49,7 +49,7 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
         # get loss and update w.
         loss, gradient, w = gradient_descent_step(y, tx, w, gamma, lambda_)
         # log info
-        if iter % 10000 == 0:
+        if iter % 100 == 0:
             print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
             print("||d|| = {d}".format(d=np.linalg.norm(gradient)))
         # converge criterion

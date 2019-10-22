@@ -95,6 +95,7 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         # Calculate gamma (Robbins-Monroe condition)
         gamma = 1 / pow(n_iter + 1, ratio)
 
+        # TODO: get just one random row of tx
         gradient = compute_gradient(y, tx, w)
         loss = compute_loss(y, tx, w)
 

@@ -28,4 +28,7 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 
     # Find the regularizer (if lambda != 0)
     regularizer = lambda_ / 2 * (np.linalg.norm(tx) ** 2) if lambda_ else 0
     
-    return np.sum(np.log(1 + np.exp(tx.dot(w))) - y * tx.dot(w)) + regularizer
+    summing = np.sum(np.log(1 + np.exp(tx.dot(w))))
+    y_component = y.T.dot(tx.dot(w)).flatten().flatten()
+    
+    return summing - y_component + regularizer
