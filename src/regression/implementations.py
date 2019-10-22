@@ -4,6 +4,8 @@ import numpy as np
 
 from src.regression.loss import compute_loss
 from src.regression.gradient import compute_gradient
+from random import randrange
+random.seed()
 
 
 def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, 
@@ -90,13 +92,17 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     # Define parameters to store w and loss
     w = initial_w
     loss = 0
+    y_len = len(y)
     for n_iter in range(max_iters):
 
         # Calculate gamma (Robbins-Monroe condition)
         gamma = 1 / pow(n_iter + 1, ratio)
 
-        # TODO: get just one random row of tx
-        gradient = compute_gradient(y, tx, w)
+        rand_idx = randrange(y_len)
+        rand_tx = tx[rand_idx]
+        rand_y = y[rand_idx]
+        
+        gradient = compute_gradient(rand_y, rand_tx, w)
         loss = compute_loss(y, tx, w)
 
         # Update w by gradient
