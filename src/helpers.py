@@ -100,7 +100,7 @@ def predict_labels(weights: np.ndarray, data: np.ndarray, mode: str = "logistic"
     assert mode == "logistic" or "linear", "The model should be either logistic or linear"
     bound = 0 if mode == "linear" else 0.5
     y_pred = np.dot(data, weights)
-    y_pred[np.where(y_pred <= bound)] = -1
+    y_pred[np.where(y_pred <= bound)] = -1 if mode == "linear" else 0
     y_pred[np.where(y_pred > bound)] = 1
 
     return y_pred
@@ -121,6 +121,9 @@ def create_csv_submission(ids: np.ndarray, y_pred: np.ndarray, name: str) -> Non
     name: np.ndarray
         String name of .csv output file to be created.
     """
+
+    y_pred[np.where(y_pred == 0)] = -1
+
     with open(name, 'w') as csv_file:
         fieldnames = ['Id', 'Prediction']
         writer = csv.DictWriter(csv_file, delimiter=",", fieldnames=fieldnames)
