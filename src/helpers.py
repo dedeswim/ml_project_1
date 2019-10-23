@@ -127,7 +127,7 @@ def create_csv_submission(ids: np.ndarray, y_pred: np.ndarray, name: str) -> Non
         writer.writeheader()
         for r1, r2 in zip(ids, y_pred):
             writer.writerow({'Id': int(r1), 'Prediction': int(r2)})
-            
+
 
 def remove_incomplete_columns(x: np.ndarray, threshold: float = 0.30) -> np.ndarray:
     """
@@ -174,3 +174,30 @@ def count_missing_values(column: np.ndarray, threshold: float) -> bool:
     """
 
     return (column == -999.0).sum() / column.shape[0] < threshold
+
+
+def remove_correlated_columns(x: np.ndarray, threshold: float = 0.9) -> np.ndarray:
+    """
+    Removes correlated columns, leaving only one column for each originally correlated sets of columns.
+    
+    Arguments
+    ---------
+    x: np.ndarray
+        The matrix to be cleaned.
+    
+    threshold: float
+        The maximum percentage of correlation allowed (default = 0.9).
+    
+    Returns
+    -------
+    clean_x: np.ndarray
+        The cleaned matrix.
+        
+    to_keep: nd.array
+        Boolean array of the kept columns.
+    """
+
+    assert 0 <= threshold <= 1
+    to_remove, _ = np.where(np.triu(np.corrcoef(x.T), 1) > threshold)
+    to_remove = set(to_remove)
+    return np.delete(x, list(to_remove), axis=1), np.array([i in to_remove for i in range(x.shape[1])])
