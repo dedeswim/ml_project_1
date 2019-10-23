@@ -5,6 +5,7 @@ import csv
 from typing import Iterable, Tuple, List
 import numpy as np
 
+
 def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000) \
         -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
@@ -48,6 +49,7 @@ def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000
 
     return yb, input_data, ids
 
+
 def standardize(x: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Standardizes the original data set.
@@ -75,7 +77,7 @@ def standardize(x: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     return x, mean_x, std_x
 
 
-def predict_labels(weights: np.ndarray, data: np.ndarray, mode="logistic") -> np.ndarray:
+def predict_labels(weights: np.ndarray, data: np.ndarray, mode: str = "logistic") -> np.ndarray:
     """
     Generates class predictions given weights, and a test data matrix.
 
@@ -87,6 +89,9 @@ def predict_labels(weights: np.ndarray, data: np.ndarray, mode="logistic") -> np
     data: np.ndarry
         The data for which the label must be predicted.
     
+    mode: str
+        The type of model, either 'logistic' (default) or 'linear'
+
     Returns
     -------
     y_pred: np.ndarray
@@ -123,7 +128,8 @@ def create_csv_submission(ids: np.ndarray, y_pred: np.ndarray, name: str) -> Non
         for r1, r2 in zip(ids, y_pred):
             writer.writerow({'Id': int(r1), 'Prediction': int(r2)})
             
-def remove_columns(x: np.ndarray, threshold: float = 0.30) -> np.ndarray:
+
+def remove_incomplete_columns(x: np.ndarray, threshold: float = 0.30) -> np.ndarray:
     """
     Removes the columns that have more than threshold% missing values.
     
@@ -133,12 +139,15 @@ def remove_columns(x: np.ndarray, threshold: float = 0.30) -> np.ndarray:
         The matrix to be cleaned.
     
     threshold: float
-        The maximum percentage of missing data. The default one is 30%.
+        The maximum percentage of missing data allowed. The default one is 30%.
     
     Returns
     -------
     clean_x: np.ndarray
         The cleaned matrix. 
+    
+    to_keep: nd.array
+        Boolean array of the kept columns.
     """
     
     to_keep = np.apply_along_axis(count_missing_values, 0, x, [threshold]).flatten()
