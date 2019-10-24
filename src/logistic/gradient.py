@@ -1,9 +1,10 @@
 import numpy as np
 from src.logistic.sigmoid import sigmoid
 
+
 def compute_gradient(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 0) -> np.ndarray:
     """"
-    Calculates the of logistic regression loss.
+    Calculates the of logistic linear loss.
 
     Parameters
     ----------
@@ -14,7 +15,7 @@ def compute_gradient(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: floa
         Matrix that contains the data points. The first column is made of 1s.
     
     w: ndarray
-        Array containing the regression parameters to test.
+        Array containing the linear parameters to test.
     
     lambda_: float
         The lambda used for regularization. Default behavior is without regularization.
@@ -22,10 +23,10 @@ def compute_gradient(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: floa
     Returns
     -------
     gradient: np.ndarray
-        The gradient for the given logistic regression parameters.
+        The gradient for the given logistic linear parameters.
     """
-    
+
     # Find the regularizer component (if lambda != 0)
     regularizer = lambda_ * w if lambda_ else 0
-    
+
     return tx.T.dot(sigmoid(tx.dot(w)) - y) + regularizer

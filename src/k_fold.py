@@ -1,4 +1,6 @@
 import numpy as np
+from src.polynomials import build_poly
+
 
 def build_k_indices(y, k_fold, seed):
     """build k indices for k-fold."""
@@ -10,14 +12,14 @@ def build_k_indices(y, k_fold, seed):
                  for k in range(k_fold)]
     return np.array(k_indices)
 
+
 def cross_validation(y, x, k_indices, k, lambda_, degree, model, mean=True):
-    """return the loss of ridge regression."""
+    """return the loss of ridge linear."""
     # Get k'th subgroup in test, others in train
-    
+
     losses_tr, losses_te, ws = [], [], []
-    
+
     for k_ in range(k):
-        
         test_indices = k_indices[k_]
         train_indices = np.setdiff1d(k_indices.flatten(), test_indices)
 
@@ -30,16 +32,15 @@ def cross_validation(y, x, k_indices, k, lambda_, degree, model, mean=True):
         x_train_poly = build_poly(x_train, degree)
         x_test_poly = build_poly(x_test, degree)
 
-        # Ridge regression
+        # Ridge linear
         loss_tr, w = model(y_train, x_train_poly, lambda_)
 
         # Calculate the loss for test data
+        # TODO: give the possibility to use several losses
         loss_te = compute_loss(y_test, x_test_poly, w)
-        
+
         losses_tr.append(np.math.sqrt(2 * loss_tr))
         losses_te.append(np.math.sqrt(2 * loss_te))
-        ws.append(w_ridge)
-    
-        
-        
+        ws.append(w)
+
     return np.mean(losses_tr), np.mean(losses_te)

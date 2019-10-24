@@ -6,7 +6,7 @@ import math
 
 def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") -> float:
     """
-    Calculate the loss using either MSE, RMSE or MAE for linear regression.
+    Calculate the loss using either MSE, RMSE or MAE for linear linear.
 
     y: ndarray
         Array that contains the correct values to be predicted.
@@ -15,7 +15,7 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") 
         Matrix that contains the data points. The first column is made of 1s.
     
     w: ndarray
-        Array containing the regression parameters to test.
+        Array containing the linear parameters to test.
     
     cf: str
         String indicating which cost function to use; "mse" (default), "rmse" or "mae".
@@ -23,7 +23,7 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") 
     Returns
     -------
     loss: float
-        The loss for the given regression parameters.
+        The loss for the given linear parameters.
     """
 
     # Check whether the mode parameter is valid

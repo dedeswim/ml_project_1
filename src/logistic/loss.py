@@ -1,9 +1,9 @@
 import numpy as np
-from src.logistic.sigmoid import sigmoid
 
-def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 0)-> float:
+
+def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 0) -> float:
     """"
-    Calculates the loss for logistic regression.
+    Calculates the loss for logistic linear.
 
     Parameters
     ----------
@@ -14,7 +14,7 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 
         Matrix that contains the data points. The first column is made of 1s.
     
     w: ndarray
-        Array containing the regression parameters to test.
+        Array containing the linear parameters to test.
     
     lambda_: float
         The lambda used for regularization. Default behavior is without regularization.
@@ -22,13 +22,13 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 
     Returns
     -------
     loss: float
-        The loss for the given logistic regression parameters.
+        The loss for the given logistic linear parameters.
     """
-    
+
     # Find the regularizer (if lambda != 0)
     regularizer = lambda_ / 2 * (np.linalg.norm(tx) ** 2) if lambda_ else 0
-    
+
     summing = np.sum(np.log(1 + np.exp(tx.dot(w))))
     y_component = y.T.dot(tx.dot(w)).flatten().flatten()
-    
+
     return summing - y_component + regularizer
