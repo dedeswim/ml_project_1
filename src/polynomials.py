@@ -25,7 +25,7 @@ def build_poly_matrix_vandermonde(x, degree):
     """
 
     mat_van = np.polynomial.polynomial.polyvander(x.T, degree)
-    return np.hstack(list(mat_van[x] for x in range(mat_van.shape[0])))
+    return np.unique(np.hstack(list(mat_van[x] for x in range(mat_van.shape[0]))), axis=1)
 
 def build_poly_matrix_quadratic(x):
     """

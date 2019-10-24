@@ -238,4 +238,12 @@ jet_indexes = [
         [4, 5, 6, 12, 23, 24, 25, 26, 27, 28],
         [4, 5, 6, 12, 26, 27, 28],
         []
-    ] 
+    ]
+
+def compute_accuracy(tx, w, y, mode="logistic"):
+    
+    assert mode == "logistic" or "linear", "The model should be either logistic or linear"
+    
+    y_pred = predict_labels(w, tx, mode=mode)
+    
+    return (y_pred == y).sum() / y_pred.shape[0]
