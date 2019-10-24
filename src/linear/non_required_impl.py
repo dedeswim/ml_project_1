@@ -1,13 +1,14 @@
 from typing import Tuple
 
 import numpy as np
+from random import randrange
 
-from src.regression.loss import compute_loss
-from src.regression.gradient import compute_subgradient
-from src.helpers import batch_iter
+from src.linear.loss import compute_loss
+from src.linear.gradient import compute_subgradient
+
 
 def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
-        max_iters: int, gamma: int) -> Tuple[float, np.ndarray]:
+                        max_iters: int, gamma: int) -> Tuple[float, np.ndarray]:
     """
     Subgradient descent algorithm. Uses MAE loss function.
 
@@ -20,7 +21,7 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         Matrix that contains the data points. The first column is made of 1s.
     
     initial_w: ndarray
-        Array containing the regression parameters to start from.
+        Array containing the linear parameters to start from.
     
     max_iters: int
         The maximum number of iterations to be done.
@@ -31,7 +32,7 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     Returns
     -------
     w: np.ndarray
-        The regression parameters.
+        The linear parameters.
     
     loss: float
         The loss given w as parameters.
@@ -52,8 +53,9 @@ def subgradient_descent(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
 
     return loss, w
 
+
 def stochastic_subgradient_descent(
-        y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, batch_size: int, max_iters: int,
+        y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, max_iters: int,
         ratio: float = 0.7) -> Tuple[float, np.ndarray]:
     """
     Stochastic subgradient descent algorithm. Uses MAE loss function.
@@ -67,21 +69,18 @@ def stochastic_subgradient_descent(
         Matrix that contains the data points. The first column is made of 1s.
     
     initial_w: ndarray
-        Array containing the regression parameters to start from.
-    
-    batch_size: int
-        Other size of the batches.
+        Array containing the linear parameters to start from.
     
     max_iters: int
         The maximum number of iterations to be done.
     
     ratio: float
-        The ratio at wich the stepsize converges (0.5 - 1.0), default = 0.7.
+        The ratio at which the stepsize converges (0.5 - 1.0), default = 0.7.
 
     Returns
     -------
     w: np.ndarray
-        The regression parameters.
+        The linear parameters.
     
     loss: float
         The loss given w as parameters.
@@ -91,15 +90,16 @@ def stochastic_subgradient_descent(
     loss = 0
     w = initial_w
     for n_iter in range(max_iters):
-
         # Calculate gamma (Robbins-Monroe condition)
         gamma = 1 / pow(n_iter + 1, ratio)
 
-        # Create the batch
-        for minibatch_y, minibatch_tx in batch_iter(y, tx, batch_size):
-            # Compute gradient and loss
-            subgradient = compute_subgradient(minibatch_y, minibatch_tx, w)
-            loss = compute_loss(minibatch_y, minibatch_tx, w, cf='mae')
+        rand_idx = randrange(y.shape[0])
+        rand_tx = tx[rand_idx]
+        rand_y = y[rand_idx]
+
+        # Compute gradient and loss
+        subgradient = compute_subgradient(rand_y, rand_tx, w)
+        loss = compute_loss(rand_y, rand_tx, w, cf='mae')
 
         # Update w by gradient
         w = w - gamma * subgradient

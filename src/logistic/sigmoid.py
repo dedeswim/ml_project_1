@@ -1,13 +1,14 @@
 import numpy as np
 from typing import Union
 
+
 def sigmoid(t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     """
     Element-wise applies sigmoid function on t.
     
     Parameters
     ----------
-    y: float or ndarray
+    t: float or ndarray
         Float or array onto which the sigmoid needs to be applied.
 
     Returns

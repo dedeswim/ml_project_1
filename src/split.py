@@ -36,11 +36,11 @@ def split_data(x: np.ndarray, y: np.ndarray, ratio: float, seed: float = 1) -> \
 
     # Randomly choose indexes of train set
     data_len = x.shape[0]
-    idxs = np.random.choice(data_len, size=round(data_len*ratio), replace=False)
+    idxs = np.random.choice(data_len, size=round(data_len * ratio), replace=False)
 
     # Create a mask from indexes
     mask = np.zeros(data_len, dtype=bool)
     mask[idxs] = True
-    
+
     #      x_train  y_train  x_test    y_test
     return x[mask], y[mask], x[~mask], y[~mask]

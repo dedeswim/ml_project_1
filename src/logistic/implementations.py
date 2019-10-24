@@ -3,12 +3,12 @@ from typing import Tuple
 
 from src.logistic.loss import compute_loss
 from src.logistic.gradient import compute_gradient
-from src.logistic.hessian import compute_hessian
 
-def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float, 
-        initial_w: np.ndarray, max_iters: int, gamma: float) -> Tuple[np.ndarray, float]:
+
+def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
+                            initial_w: np.ndarray, max_iters: int, gamma: float) -> Tuple[np.ndarray, float]:
     """
-    Does the regularized logistic regression.
+    Does the regularized logistic linear.
     
     Parameters
     ----------
@@ -22,7 +22,7 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
         The lambda used for regularization. Default behavior is without regularization.
     
     initial_w: ndarray
-        Array containing the regression parameters to start with.
+        Array containing the linear parameters to start with.
     
     max_iters: int
         The maximum number of iterations to do.
@@ -33,7 +33,7 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
     Returns
     -------
     w: np.ndarray
-        The regression parameters.
+        The linear parameters.
     
     loss: float
         The loss given w as parameters.
@@ -44,29 +44,30 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
     losses = []
     w = initial_w
 
-    # start the logistic regression
-    for iter in range(max_iters):
+    # start the logistic linear
+    for iteration in range(max_iters):
         # get loss and update w.
         loss, gradient, w = gradient_descent_step(y, tx, w, gamma, lambda_)
         # log info
-        if iter % 100 == 0:
-            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
+        if iteration % 100 == 0:
+            print("Current iteration={i}, loss={loss}".format(i=iteration, loss=loss))
             print("||d|| = {d}".format(d=np.linalg.norm(gradient)))
         # converge criterion
         losses.append(loss)
         # print("Current iteration={i}, loss={l}, ||d|| = {d}".format(i=iter, l=loss, d=np.linalg.norm(gradient)))
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
-    
+
     # visualization
     print("loss={l}".format(l=compute_loss(y, tx, w)))
 
     return w, losses[-1]
 
+
 def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
-        max_iters: int, gamma: float) -> Tuple[np.ndarray, float]:
+                        max_iters: int, gamma: float) -> Tuple[np.ndarray, float]:
     """
-    Computes the parameters for the logistic regression.
+    Computes the parameters for the logistic linear.
     
     Parameters
     ----------
@@ -77,7 +78,7 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         Matrix that contains the data points. The first column is made of 1s.
     
     initial_w: ndarray
-        Array containing the regression parameters to start with.
+        Array containing the linear parameters to start with.
     
     max_iters: int
         The maximum number of iterations to do.
@@ -88,7 +89,7 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     Returns
     -------
     w: np.ndarray
-        The regression parameters.
+        The linear parameters.
     
     loss: float
         The loss given w as parameters.
@@ -96,8 +97,9 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
 
     return reg_logistic_regression(y, tx, 0, initial_w, max_iters, gamma)
 
+
 def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: float,
-        lambda_: float = 0) -> Tuple[float, np.ndarray, np.ndarray]:
+                          lambda_: float = 0) -> Tuple[float, np.ndarray, np.ndarray]:
     """
     Computes one step of gradient descent.
     
@@ -110,7 +112,7 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: f
         Matrix that contains the data points. The first column is made of 1s.
     
     w: ndarray
-        Array containing the regression parameters to test.
+        Array containing the linear parameters to test.
     
     gamma: float
         The stepsize.
@@ -121,7 +123,7 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: f
     Returns
     -------
     w: np.ndarray
-        The regression parameters.
+        The linear parameters.
     
     loss: float
         The loss given w as parameters.
@@ -132,7 +134,5 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: f
 
     # Update w
     w = w - gamma * gradient
-    
-    return loss, gradient, w
 
-    
+    return loss, gradient, w

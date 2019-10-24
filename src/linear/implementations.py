@@ -2,14 +2,13 @@ from typing import Tuple
 
 import numpy as np
 
-from src.regression.loss import compute_loss
-from src.regression.gradient import compute_gradient
+from src.linear.loss import compute_loss
+from src.linear.gradient import compute_gradient
 from random import randrange
-random.seed()
 
 
-def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, 
-        max_iters: int, gamma: float) -> Tuple[float, np.ndarray]:
+def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
+                     max_iters: int, gamma: float) -> Tuple[float, np.ndarray]:
     """
     Gradient descent algorithm. Uses MSE loss function.
 
@@ -22,7 +21,7 @@ def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         Matrix that contains the data points. The first column is made of 1s.
     
     initial_w: ndarray
-        Array containing the regression parameters to start from.
+        Array containing the linear parameters to start from.
     
     max_iters: int
         The maximum number of iterations to be done.
@@ -33,7 +32,7 @@ def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     Returns
     -------
     w: np.ndarray
-        The regression parameters.
+        The linear parameters.
     
     loss: float
         The loss given w as parameters.
@@ -55,8 +54,9 @@ def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
 
     return loss, w
 
+
 def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
-        batch_size: int, max_iters: int, ratio: float = 0.7) -> Tuple[float, np.ndarray]:
+                      max_iters: int, ratio: float = 0.7) -> Tuple[float, np.ndarray]:
     """
     Stochastic gradient descent algorithm. Uses MSE loss function.
 
@@ -69,10 +69,7 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         Matrix that contains the data points. The first column is made of 1s.
     
     initial_w: ndarray
-        Array containing the regression parameters to start from.
-    
-    batch_size: int
-        The size of the batches to be created.
+        Array containing the linear parameters to start from.
     
     max_iters: int
         The maximum number of iterations to be done.
@@ -83,7 +80,7 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     Returns
     -------
     w: np.ndarray
-        The regression parameters.
+        The linear parameters.
     
     loss: float
         The loss given w as parameters.
@@ -94,14 +91,13 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     loss = 0
     y_len = len(y)
     for n_iter in range(max_iters):
-
         # Calculate gamma (Robbins-Monroe condition)
         gamma = 1 / pow(n_iter + 1, ratio)
 
         rand_idx = randrange(y_len)
         rand_tx = tx[rand_idx]
         rand_y = y[rand_idx]
-        
+
         gradient = compute_gradient(rand_y, rand_tx, w)
         loss = compute_loss(y, tx, w)
 
@@ -112,6 +108,7 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
             bi=n_iter, ti=max_iters - 1, ls=loss, w0=w[0], w1=w[1]))
 
     return loss, w
+
 
 def least_squares(y: np.ndarray, tx: np.ndarray) -> Tuple[float, np.ndarray]:
     """
@@ -127,7 +124,7 @@ def least_squares(y: np.ndarray, tx: np.ndarray) -> Tuple[float, np.ndarray]:
     Returns
     -------
     w: np.ndarray
-        The regression parameters.
+        The linear parameters.
     
     loss: float
         The loss given w as parameters.
@@ -141,7 +138,7 @@ def least_squares(y: np.ndarray, tx: np.ndarray) -> Tuple[float, np.ndarray]:
 
 def ridge_regression(y: np.ndarray, tx: np.ndarray, lambda_: float) -> Tuple[float, np.ndarray]:
     """
-    Computes ridge regression with the given `lambda_`.
+    Computes ridge linear with the given `lambda_`.
 
     Parameters
     ----------
@@ -158,7 +155,7 @@ def ridge_regression(y: np.ndarray, tx: np.ndarray, lambda_: float) -> Tuple[flo
     Returns
     -------
     w: np.ndarray
-        The regression parameters.
+        The linear parameters.
     
     loss: float
         The loss given w as parameters.

@@ -22,9 +22,9 @@ def compute_gradient(y: np.ndarray, tx: np.ndarray, w: np.ndarray) -> np.ndarray
         Array containing the gradient of the MSE function.
     """
 
-    # Get the number of datapoints
+    # Get the number of data points
     n = y.shape[0]
-    
+
     # Create the error vector (i.e. yn - the predicted n-th value)
     e = y - tx.dot(w)
 
@@ -52,9 +52,9 @@ def compute_subgradient(y, tx, w):
         Array containing the gradient of the MAE function.
     """
 
-    # Get the number of datapoints
+    # Get the number of data points
     n = y.shape[0]
-    
+
     # Create the error vector (i.e. yn - the predicted n-th value)
     e = y - tx.dot(w)
 

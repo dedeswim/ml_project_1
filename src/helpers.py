@@ -2,7 +2,7 @@
 """Some helper functions"""
 
 import csv
-from typing import Iterable, Tuple, List
+from typing import Tuple
 import numpy as np
 
 
@@ -13,13 +13,15 @@ def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000
     
     Parameters
     ----------
-
     data_path: str
         The path of the file containing the dataset.
     
     sub_sample: bool
         Whether the function should return the entire dataset (default behavior)
-        or only the first 50 datapoints.
+        or only the first 50 data points.
+
+    sub_sample_size: int
+        The size of the subsample.
 
     Returns
     -------
@@ -30,7 +32,7 @@ def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000
         Matrix that contains the data points.
     
     ids: ndarray
-        Array containing the id of the datapoints.
+        Array containing the id of the data points.
     """
     y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=[1])
     x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
@@ -132,7 +134,7 @@ def create_csv_submission(ids: np.ndarray, y_pred: np.ndarray, name: str) -> Non
             writer.writerow({'Id': int(r1), 'Prediction': int(r2)})
 
 
-def remove_incomplete_columns(x: np.ndarray, threshold: float = 0.30) -> np.ndarray:
+def remove_incomplete_columns(x: np.ndarray, threshold: float = 0.30) -> Tuple[np.ndarray, np.ndarray]:
     """
     Removes the columns that have more than threshold% missing values.
     
@@ -152,19 +154,19 @@ def remove_incomplete_columns(x: np.ndarray, threshold: float = 0.30) -> np.ndar
     to_keep: nd.array
         Boolean array of the kept columns.
     """
-    
+
     to_keep = np.apply_along_axis(count_missing_values, 0, x, [threshold]).flatten()
-        
+
     return x[:, to_keep], to_keep
-        
-        
+
+
 def count_missing_values(column: np.ndarray, threshold: float) -> bool:
     """
     Checks whether the percentage of missing values on a column is less than a given threshold.
     
     Parameters
     ----------
-    x: np.ndarray
+    column: np.ndarray
         The columns to be checked.
     
     threshold: float
@@ -179,7 +181,7 @@ def count_missing_values(column: np.ndarray, threshold: float) -> bool:
     return (column == -999.0).sum() / column.shape[0] < threshold
 
 
-def remove_correlated_columns(x: np.ndarray, threshold: float = 0.9) -> np.ndarray:
+def remove_correlated_columns(x: np.ndarray, threshold: float = 0.9) -> Tuple[np.ndarray, np.ndarray]:
     """
     Removes correlated columns, leaving only one column for each originally correlated sets of columns.
     
