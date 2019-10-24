@@ -26,3 +26,12 @@ def build_poly_matrix_vandermonde(x, degree):
 
     mat_van = np.polynomial.polynomial.polyvander(x.T, degree)
     return np.hstack(list(mat_van[x] for x in range(mat_van.shape[0])))
+
+def build_poly_matrix_quadratic(x):
+    """
+    TOWRITE
+    """
+
+    cols = [c for c in x.T]
+    cols.extend(list(c_1 * c_2 for c_2 in cols for c_1 in cols))
+    return np.column_stack(cols)

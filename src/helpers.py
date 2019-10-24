@@ -205,4 +205,4 @@ def remove_correlated_columns(x: np.ndarray, threshold: float = 0.9) -> Tuple[np
     assert 0 <= threshold <= 1
     _, to_remove = np.where(np.triu(np.corrcoef(x.T), 1) > threshold)
     to_remove = set(to_remove)
-    return np.delete(x, list(to_remove), axis=1), np.array([i in to_remove for i in range(x.shape[1])]), to_remove
+    return np.delete(x, list(to_remove), axis=1), np.array([i not in to_remove for i in range(x.shape[1])])
