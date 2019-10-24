@@ -2,8 +2,9 @@
 """Some helper functions"""
 
 import csv
-from typing import Tuple
 import numpy as np
+from typing import Tuple
+from src.polynomials import build_poly_matrix_vandermonde
 
 
 def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000) \
@@ -222,29 +223,19 @@ def flatten_jet_features(x, indexes=[4, 5, 6, 12, 23, 24, 25, 26, 27, 28]):
 
     return np.delete(x_new_column, indexes, axis=1)
 
-def jet_split(x, y, degree):  
+def get_jet_indexes(x):  
     """
     TODO
     """
-    x0, x1, x23 = x[(x[:, 22] == 0)], x[(x[:, 22] == 1)], x[(x[:, 22] == 2) | (x[:, 22] == 3)]
-    y0, y1, y23 = y[(x[:, 22] == 0)], y[(x[:, 22] == 1)], y[(x[:, 22] == 2) | (x[:, 22] == 3)]
     
-    jet0_indexes = [4, 5, 6, 12, 23, 24, 25, 26, 27, 28]
-    jet1_indexes = [4, 5, 6, 12, 26, 27, 28]
-    
-    x0_rem = np.delete(x0, jet0_indexes, axis=1)
-    x1_rem = np.delete(x1, jet1_indexes, axis=1)
-    
-    x0_std = standardize(x0_rem)[0]
-    x1_std = standardize(x1_rem)[0]
-    x23_std = standardize(x23)[0]
-    
-    x0_poly = build_poly_matrix_vandermonde(x0_std, degree)    
-    x1_poly = build_poly_matrix_vandermonde(x1_std, degree)
-    x23_poly = build_poly_matrix_vandermonde(x23_std, degree)
-    
-    tx0 = np.c_[np.ones((y0.shape[0], 1)), x0_poly]
-    tx1 = np.c_[np.ones((y1.shape[0], 1)), x1_poly]
-    tx23 = np.c_[np.ones((y23.shape[0], 1)), x23_poly]
-    
-    return tx0, tx1, tx23, y0, y1, y23
+    return {
+        0: x[:, 22] == 0,
+        1: x[:, 22] == 0,
+        2: np.bitwise_or(x[:, 22] == 1, x[:, 22] == 2)
+    }
+
+jet_indexes = [
+        [4, 5, 6, 12, 23, 24, 25, 26, 27, 28],
+        [4, 5, 6, 12, 26, 27, 28],
+        []
+    ] 
