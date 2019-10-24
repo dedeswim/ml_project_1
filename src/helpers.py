@@ -203,9 +203,9 @@ def remove_correlated_columns(x: np.ndarray, threshold: float = 0.9) -> Tuple[np
     """
 
     assert 0 <= threshold <= 1
-    to_remove, _ = np.where(np.triu(np.corrcoef(x.T), 1) > threshold)
+    _, to_remove = np.where(np.triu(np.corrcoef(x.T), 1) > threshold)
     to_remove = set(to_remove)
-    return np.delete(x, list(to_remove), axis=1), np.array([i in to_remove for i in range(x.shape[1])])
+    return np.delete(x, list(to_remove), axis=1), np.array([i not in to_remove for i in range(x.shape[1])])
 
 def flatten_jet_features(x, indexes=[4, 5, 6, 12, 23, 24, 25, 26, 27, 28]):
     
