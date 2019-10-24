@@ -40,6 +40,7 @@ For the beginning we should focus on the first (bigger) dataset, leaving the oth
 ### 2019-10-20 [Davide]
 
 Two possible methods of feature selection:
+
 - Univariate feature selection (only works well for independent features)
 - Recursive Feature Elimination
 
@@ -56,3 +57,9 @@ So I guess we should:
     - Recursive Feature Elimination
 
 3. Eval accuracy improvement
+
+### 2019-10-24 [Edoardo]
+
+After some trials I could implement Newton method for logistic regression. The trick is using the regularizer. Unfortunately, it does not seem to converge as fast as excepted, since the gradient norm stays pretty high.
+
+I also tried with SGD in logistic regressiojn, getting decent results (.675 accuracy), but i guess we can improve it. The setting was 100k iterations and a .001 gamma.

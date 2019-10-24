@@ -206,3 +206,16 @@ def remove_correlated_columns(x: np.ndarray, threshold: float = 0.9) -> Tuple[np
     to_remove, _ = np.where(np.triu(np.corrcoef(x.T), 1) > threshold)
     to_remove = set(to_remove)
     return np.delete(x, list(to_remove), axis=1), np.array([i in to_remove for i in range(x.shape[1])])
+
+def flatten_jet_features(x, indexes=[4, 5, 6, 12, 23, 24, 25, 26, 27, 28]):
+    
+    jet_features_columns = x[:, indexes]
+
+    for feature in indexes:
+        jet_features_columns[np.where(x[:, feature] == -999)] = 0
+
+    new_column = jet_features_columns.sum(axis=1).reshape((-1, 1))
+
+    x_new_column = np.append(x, new_column, axis=1)
+
+    return np.delete(x_new_column, indexes, axis=1)
