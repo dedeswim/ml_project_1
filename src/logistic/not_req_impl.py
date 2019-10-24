@@ -8,7 +8,7 @@ from src.logistic.hessian import compute_hessian
 
 
 def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray, lambda_: float,
-                            max_iters: int, gamma: float, method: str = 'sgd') -> Tuple[np.ndarray, float]:
+                            max_iters: int, gamma: float, method: str = 'sgd', ratio: float = 0.7) -> Tuple[np.ndarray, float]:
     """
     Does the regularized logistic linear.
     
@@ -30,10 +30,13 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray
         The maximum number of iterations to do.
     
     gamma: float
-        Gradient descent stepsize
+        Gradient descent stepsize. Only used for gd.
         
     method: str
         The method for the optimization solution. Should be either SGD, Newton or GD.
+
+    ratio: float
+        The ratio at which the stepsize converges (0.5 - 1.0), default = 0.7.
 
     Returns
     -------
@@ -53,8 +56,14 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray
 
     # start the logistic linear
     for iteration in range(max_iters):
+
+        gamma_ = gamma
+        if method in ["sgd", "newton"]:
+            # Calculate gamma (Robbins-Monroe condition)
+            gamma_ = gamma / pow(iteration + 1, ratio)
+        
         # get loss and update w.
-        loss, w, gradient = gradient_descent_step(y, tx, w, gamma, lambda_, method=method)
+        loss, w, gradient = gradient_descent_step(y, tx, w, gamma_, lambda_, method=method)
 
         # log info
         if iteration % 1000 == 0:
@@ -62,8 +71,8 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray
             print("||d|| = {d}".format(d=np.linalg.norm(gradient)))
         # converge criterion
         losses.append(loss)
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
+        #if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+        #    break
 
     # visualization
     print("loss={l}".format(l=compute_loss(y, tx, w)))
@@ -72,7 +81,7 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray
 
 
 def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
-                        max_iters: int, gamma: float, method: str = 'sgd') -> Tuple[np.ndarray, float]:
+                        max_iters: int, gamma: float, method: str = 'sgd', ratio: float = 0.7) -> Tuple[np.ndarray, float]:
     """
     Does the logistic linear.
     
@@ -91,10 +100,13 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
         The maximum number of iterations to do.
     
     gamma: float
-        Gradient descent stepsize
+        Gradient descent stepsize. Only used for gd.
 
     method: str
         The method for the optimization solution. Should be either SGD, Newton or GD.
+
+    ratio: float
+        The ratio at which the stepsize converges (0.5 - 1.0), default = 0.7.
 
     Returns
     -------
@@ -107,7 +119,7 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
 
     assert method in ['sgd', 'newton', 'gd'], "Argument 'method' must be either " + ", ".join(f"'{x}'" for x in method)
 
-    return reg_logistic_regression(y, tx, initial_w, 0, max_iters, gamma, method=method)
+    return reg_logistic_regression(y, tx, initial_w, 0, max_iters, gamma, method=method, ratio=ratio)
 
 
 def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: np.ndarray,
