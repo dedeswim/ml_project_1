@@ -33,5 +33,5 @@ def build_poly_matrix_quadratic(x):
     """
 
     cols = [c for c in x.T]
-    cols.extend(list(c_1 * c_2 for c_2 in cols for c_1 in cols))
+    cols.extend(list(c_1 * c_2 for c_2 in cols[i_1:] for i_1,c_1 in enumerate(cols)))
     return np.column_stack(cols)
