@@ -241,6 +241,8 @@ jet_indexes = [
         []
     ]
 
+log_indexes = [1, 2, 3, 5, 6, 7, 9, 12, 15]
+
 def compute_accuracy(tx, w, y, mode="logistic"):
 
     assert mode == "logistic" or "linear", "The model should be either logistic or linear"
