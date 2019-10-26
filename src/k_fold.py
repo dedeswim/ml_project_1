@@ -1,5 +1,7 @@
 import numpy as np
-from src.polynomials import build_poly
+from src.polynomials import build_poly_matrix_vandermonde
+from src.linear.loss import compute_loss
+from src.helpers import compute_accuracy
 
 
 def build_k_indices(y, k_fold, seed):
@@ -13,11 +15,11 @@ def build_k_indices(y, k_fold, seed):
     return np.array(k_indices)
 
 
-def cross_validation(y, x, k_indices, k, lambda_, degree, model, mean=True):
+def cross_validation(y, x, k_indices, k, lambda_, model, mean=True):
     """return the loss of ridge linear."""
     # Get k'th subgroup in test, others in train
 
-    losses_tr, losses_te, ws = [], [], []
+    losses_tr, losses_te, accs_tr, accs_te, ws = [], [], [], [], []
 
     for k_ in range(k):
         test_indices = k_indices[k_]
@@ -28,19 +30,20 @@ def cross_validation(y, x, k_indices, k, lambda_, degree, model, mean=True):
         y_test = y[test_indices]
         x_test = x[test_indices]
 
-        # Form data with polynomial degree
-        x_train_poly = build_poly(x_train, degree)
-        x_test_poly = build_poly(x_test, degree)
-
         # Ridge linear
-        loss_tr, w = model(y_train, x_train_poly, lambda_)
+        loss_tr, w = model(y_train, x_train, lambda_)
 
         # Calculate the loss for test data
-        # TODO: give the possibility to use several losses
-        loss_te = compute_loss(y_test, x_test_poly, w)
+        loss_te = compute_loss(y_test, x_test, w)
+        
+        acc_tr = compute_accuracy(x_train, w, y_train, mode='linear')
+        acc_te = compute_accuracy(x_test, w, y_test, mode='linear')
+        
+        accs_te.append(acc_te)
+        accs_tr.append(acc_tr)
 
         losses_tr.append(np.math.sqrt(2 * loss_tr))
         losses_te.append(np.math.sqrt(2 * loss_te))
         ws.append(w)
 
-    return np.mean(losses_tr), np.mean(losses_te)
+    return np.mean(ws), np.mean(losses_tr), np.mean(losses_te), np.mean(accs_tr), np.mean(accs_te)

@@ -11,12 +11,12 @@ def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000
         -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Loads data and returns y (class labels), tX (features) and ids (event ids).
-    
+
     Parameters
     ----------
     data_path: str
         The path of the file containing the dataset.
-    
+
     sub_sample: bool
         Whether the function should return the entire dataset (default behavior)
         or only the first 50 data points.
@@ -28,10 +28,10 @@ def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000
     -------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     input_data: ndarray
         Matrix that contains the data points.
-    
+
     ids: ndarray
         Array containing the id of the data points.
     """
@@ -56,7 +56,7 @@ def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000
 def standardize(x: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Standardizes the original data set.
-    
+
     Parameters
     ----------
     x: ndarray
@@ -66,13 +66,14 @@ def standardize(x: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     -------
     x: np.ndarry
         The standardized dataset
-    
+
     mean_x: np.ndarray
         The mean of x before the standardization
-    
+
     mean_x: np.ndarray
         The standard deviation of x before the standardization
     """
+    x[:, 0][x[:, 0] == -999] = np.median(x[:, 0][x[:, 0] != -999])
     mean_x = np.mean(x)
     x = x - mean_x
     std_x = np.std(x)
@@ -80,7 +81,7 @@ def standardize(x: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     return x, mean_x, std_x
 
 
-def predict_labels(weights: np.ndarray, data: np.ndarray, mode: str = "logistic") -> np.ndarray:
+def predict_labels(weights: np.ndarray, data: np.ndarray, mode: str="logistic") -> np.ndarray:
     """
     Generates class predictions given weights, and a test data matrix.
 
@@ -88,17 +89,17 @@ def predict_labels(weights: np.ndarray, data: np.ndarray, mode: str = "logistic"
     ---------
     weights: np.ndarray
         The weights of the predictive functions.
-    
+
     data: np.ndarry
         The data for which the label must be predicted.
-    
+
     mode: str
         The type of model, either 'logistic' (default) or 'linear'
 
     Returns
     -------
     y_pred: np.ndarray
-        The predicted labels.    
+        The predicted labels.
     """
     assert mode == "logistic" or "linear", "The model should be either logistic or linear"
     bound = 0 if mode == "linear" else 0.5
@@ -112,15 +113,15 @@ def predict_labels(weights: np.ndarray, data: np.ndarray, mode: str = "logistic"
 def create_csv_submission(ids: np.ndarray, y_pred: np.ndarray, name: str) -> None:
     """
     Creates an output file in csv format for submission to Kaggle.
-    
+
     Arguments
     ---------
     ids: np.ndarray
         Event ids associated with each prediction.
-    
+
     y_pred: np.ndarry
         Predicted class labels.
-    
+
     name: np.ndarray
         String name of .csv output file to be created.
     """
@@ -138,20 +139,20 @@ def create_csv_submission(ids: np.ndarray, y_pred: np.ndarray, name: str) -> Non
 def remove_incomplete_columns(x: np.ndarray, threshold: float = 0.30) -> Tuple[np.ndarray, np.ndarray]:
     """
     Removes the columns that have more than threshold% missing values.
-    
+
     Arguments
     ---------
     x: np.ndarray
         The matrix to be cleaned.
-    
+
     threshold: float
         The maximum percentage of missing data allowed. The default one is 30%.
-    
+
     Returns
     -------
     clean_x: np.ndarray
-        The cleaned matrix. 
-    
+        The cleaned matrix.
+
     to_keep: nd.array
         Boolean array of the kept columns.
     """
@@ -164,15 +165,15 @@ def remove_incomplete_columns(x: np.ndarray, threshold: float = 0.30) -> Tuple[n
 def count_missing_values(column: np.ndarray, threshold: float) -> bool:
     """
     Checks whether the percentage of missing values on a column is less than a given threshold.
-    
+
     Parameters
     ----------
     column: np.ndarray
         The columns to be checked.
-    
+
     threshold: float
         The maximum percentage of missing data.
-    
+
     Returns
     -------
     valid: bool
@@ -185,20 +186,20 @@ def count_missing_values(column: np.ndarray, threshold: float) -> bool:
 def remove_correlated_columns(x: np.ndarray, threshold: float = 0.9) -> Tuple[np.ndarray, np.ndarray]:
     """
     Removes correlated columns, leaving only one column for each originally correlated sets of columns.
-    
+
     Arguments
     ---------
     x: np.ndarray
         The matrix to be cleaned.
-    
+
     threshold: float
         The maximum percentage of correlation allowed (default = 0.9).
-    
+
     Returns
     -------
     clean_x: np.ndarray
         The cleaned matrix.
-        
+
     to_keep: nd.array
         Boolean array of the kept columns.
     """
@@ -223,15 +224,15 @@ def flatten_jet_features(x, indexes=[4, 5, 6, 12, 23, 24, 25, 26, 27, 28]):
 
     return np.delete(x_new_column, indexes, axis=1)
 
-def get_jet_indexes(x):  
+def get_jet_indexes(x):
     """
     TODO
     """
-    
+
     return {
         0: x[:, 22] == 0,
-        1: x[:, 22] == 0,
-        2: np.bitwise_or(x[:, 22] == 1, x[:, 22] == 2)
+        1: x[:, 22] == 1,
+        2: np.bitwise_or(x[:, 22] == 2, x[:, 22] == 3)
     }
 
 jet_indexes = [
@@ -241,9 +242,9 @@ jet_indexes = [
     ]
 
 def compute_accuracy(tx, w, y, mode="logistic"):
-    
+
     assert mode == "logistic" or "linear", "The model should be either logistic or linear"
-    
+
     y_pred = predict_labels(w, tx, mode=mode)
-    
+
     return (y_pred == y).sum() / y_pred.shape[0]
