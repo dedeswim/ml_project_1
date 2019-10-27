@@ -303,25 +303,3 @@ def ridge_regression(y: np.ndarray, tx: np.ndarray, lambda_: float) -> Tuple[flo
     loss = compute_loss(y, tx, w)
 
     return loss, w
-
-
-def prepare_data(x):
-        # Get the rows relative to the i-th subset taken in consideration
-    tx_i = x[x_jet_indexes[i]]
-
-    # Delete the columns that are -999 for the given subset
-    tx_del = np.delete(tx_i, jet_indexes[i], axis=1)
-
-    # Take the logarithm of each column
-    for li in range(tx_del.shape[1]):
-        tx_del[:, li] = np.apply_along_axis(lambda n: np.log(
-            1 + abs(tx_del[:, li].min()) + n), 0, tx_del[:, li])
-
-    # Standardize the data
-    tx_std = standardize(tx_del)[0]
-
-    # Build the polynomial expansion of degree 2 and add the 1s column
-    tx = build_poly_matrix_quadratic(tx_std)
-    tx = np.c_[np.ones((y_i.shape[0], 1)), tx]
-
-    return tx

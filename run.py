@@ -1,16 +1,13 @@
 import numpy as np
 import time
 
-from src.helpers import load_csv_data, standardize, predict_labels, get_jet_indexes, jet_indexes, compute_accuracy, create_csv_submission, clean_mass_feature, prepare_x
+from src.helpers import load_csv_data, predict_labels, get_jet_indexes, \
+    create_csv_submission, clean_mass_feature, prepare_x
 from implementations import ridge_regression
-from src.polynomials import build_poly_matrix_quadratic
-from src.plots import plot_lambda_accuracy, plot_lambda_error, plot_poly_degree_accuracy, plot_poly_degree_error
-from src.linear.loss import compute_loss
 from src.k_fold import cross_validation, build_k_indices
 
 
 def ridge_regression_sets(x, y, lambda_, k):
-
     # Create lists to save the different ws, accuracies and losses for the
     # different subsets we run the training on
     ws = []
@@ -24,7 +21,6 @@ def ridge_regression_sets(x, y, lambda_, k):
 
     # Iterate over the different subsets
     for i, indexes in enumerate(x_jet_indexes):
-
         # Get the rows relative to the i-th subset taken in consideration
         tx_i = prepare_x(x, x_jet_indexes, i)
         y_i = y[indexes]
@@ -54,7 +50,6 @@ def ridge_regression_sets(x, y, lambda_, k):
 
 
 def main():
-
     # Import data
     y, x_raw, ids = load_csv_data('data/train.csv')
 
@@ -90,7 +85,6 @@ def main():
     # Iterate over the parameters of the models trained on the different
     # subsets, and predict the labels of each subset
     for i, w in enumerate(ws):
-
         # Prepare the feature of the i-th subset
         tx_sub = prepare_x(x_sub, x_sub_jet_indexes, i)
 

@@ -3,7 +3,7 @@
 
 import csv
 import numpy as np
-from typing import Tuple
+from typing import Tuple, List
 
 from src.polynomials import build_poly_matrix_quadratic
 
@@ -66,7 +66,7 @@ def standardize(x: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     Returns
     -------
-    x: np.ndarry
+    x: np.ndarray
         The standardized dataset
 
     mean_x: np.ndarray
@@ -91,7 +91,7 @@ def predict_labels(weights: np.ndarray, data: np.ndarray, mode: str = "logistic"
     weights: np.ndarray
         The weights of the predictive functions.
 
-    data: np.ndarry
+    data: np.ndarray
         The data for which the label must be predicted.
 
     mode: str
@@ -120,7 +120,7 @@ def create_csv_submission(ids: np.ndarray, y_pred: np.ndarray, name: str) -> Non
     ids: np.ndarray
         Event ids associated with each prediction.
 
-    y_pred: np.ndarry
+    y_pred: np.ndarray
         Predicted class labels.
 
     name: np.ndarray
@@ -212,10 +212,25 @@ def remove_correlated_columns(x: np.ndarray, threshold: float = 0.9) -> Tuple[np
     return np.delete(x, list(to_remove), axis=1), np.array([i not in to_remove for i in range(x.shape[1])])
 
 
-def flatten_jet_features(x, indexes=[4, 5, 6, 12, 23, 24, 25, 26, 27, 28]):
+def flatten_jet_features(x: np.ndarray, indexes: Tuple[int] = (4, 5, 6, 12, 23, 24, 25, 26, 27, 28)) -> np.ndarray:
     """
-    TODO
+    Flattens the columns passed in indexes to one column, by mapping to 0 the entries with
+    -999 and summing up the columns row-wise.
+
+    Arguments
+    ---------
+    x: np.ndarray
+        The matrix to be cleaned.
+
+    indexes: float
+        The indexes of the columns to be flattened (usually the jet number related ones)
+
+    Returns
+    -------
+    x: np.ndarray
+        The original array with the index columns flattened.
     """
+    # Get the columns containing the jet number-related features
     jet_features_columns = x[:, indexes]
 
     for feature in indexes:
@@ -228,9 +243,22 @@ def flatten_jet_features(x, indexes=[4, 5, 6, 12, 23, 24, 25, 26, 27, 28]):
     return np.delete(x_new_column, indexes, axis=1)
 
 
-def get_jet_indexes(x):
+def get_jet_indexes(x: np.ndarray) -> List[np.ndarray]:
     """
-    TODO
+    Gets the masks with the rows belonging to each of the jet number subsets.
+
+    Arguments
+    ---------
+    x: np.ndarray
+        The array to be indexed.
+
+    Returns
+    -------
+    indexes: List[np.ndarray]
+        A list of ndarrays (of booleans). Each ndarray contains the mask of the relative
+        subset. `indexes[0]` contains has True values on the rows with jet number 0, `indexes[1]`
+        has True values on the rows with jet number 1 and `indexes[2]` has True values on the
+        rows with jet numbers 2 and 3.
     """
 
     return [
@@ -241,42 +269,103 @@ def get_jet_indexes(x):
 
 
 """
-TODO
+Contains the indexes of the rows to be removed for each subset, since they contain null values.
 """
 jet_indexes = [
-    [4, 5, 6, 12, 23, 24, 25, 26, 27, 28],
-    [4, 5, 6, 12, 26, 27, 28],
-    []
+    [4, 5, 6, 12, 23, 24, 25, 26, 27, 28],  # indexes to be removed from rows with jet number 0
+    [4, 5, 6, 12, 26, 27, 28],  # indexes to be removed from rows with jet number 1
+    []  # no indexes are removed, since with jet numbers 2 and 3 no features are missing
 ]
 
 
-def compute_accuracy(tx, w, y, mode="logistic"):
+def compute_accuracy(tx: np.ndarray, w: np.ndarray, y: np.ndarray, mode: str = "logistic") -> float:
     """
-    TODO
+    Computes the accuracy on the given dataset using the given model parameters
+
+    Arguments
+    ---------
+    tx: np.ndarray
+        The data with which compute the accuracy.
+    w: np.ndarray
+        The weights of the model to predict with.
+    y: np.ndarray
+        The labels to be predicted.
+    mode: np.ndarray
+        The kind of model being used. It must be either `logistic` or `linear`.
+
+    Returns
+    -------
+    accuracy: float
+        The accuracy.
     """
 
     assert mode == "logistic" or "linear", "The model should be either logistic or linear"
 
+    # Predict the labels
     y_pred = predict_labels(w, tx, mode=mode)
 
+    # Get the number of elements for which the prediction is equal to the original label,
+    # and divide it by the total number of elements.
     return (y_pred == y).sum() / y_pred.shape[0]
 
 
-def clean_mass_feature(x):
+def clean_mass_feature(x: np.ndarray) -> np.ndarray:
     """
-    TODO
+    Deals with the fact that some mass entries are null. It first creates a new column
+    where each element is 0 if the corresponding row has a non-null (!=-999) value,
+    otherwise it is 1. Then it substitutes the null values in the original mass column
+    and adds the newly created column to the original dataset.
+
+    Arguments
+    ---------
+    x: np.ndarray
+        The dataset whose masses features need to be fixed.
+
+    Returns
+    -------
+    x: np.ndarray
+        The array with fixed mass values and with the new column.
     """
+    # Create a new array containing all 0
     x_mass = np.zeros(x.shape[0])
+
+    # Set the elements corresponding to rows with missing mass to 1
     x_mass[x[:, 0] == -999] = 1
+
+    # Set the missing values to the median
     x[:, 0][x[:, 0] == -999] = np.median(x[:, 0][x[:, 0] != -999])
+
+    # Add the newly created column to the dataset
     x = np.column_stack((x, x_mass))
 
     return x
 
 
-def prepare_x(x, indexes, i):
+def prepare_x(x: np.ndarray, indexes: List[np.ndarray], i: int):
     """
-    TODO
+    Prepares the i-th subset of x to be used for training. In particular, it:
+
+    * deletes the columns with missing values.
+    * takes the logarithm of each feature.
+    * standardizes the data.
+    * builds the 2nd degree expansion of the rows.
+    * adds a 1s column to be multiplied with a w_0 weight.
+
+    Arguments
+    ---------
+    x: np.ndarray
+        The dataset whose masses features need to be fixed.
+
+    indexes: np.ndarray
+        the mask containing the row indexes to be taken in consideration.
+
+    i: int
+        The subset to take in consideration.
+
+    Returns
+    -------
+    x: np.ndarray
+        The array ready to be used for training.
     """
     # Get the rows relative to the i-th subset taken in consideration
     tx_i = x[indexes[i]]
