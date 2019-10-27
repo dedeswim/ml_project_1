@@ -4,19 +4,20 @@
 import numpy as np
 import math
 
+
 def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") -> float:
     """
     Calculate the loss using either MSE, RMSE or MAE for linear linear.
 
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     w: ndarray
         Array containing the linear parameters to test.
-    
+
     cf: str
         String indicating which cost function to use; "mse" (default), "rmse" or "mae".
 
@@ -28,8 +29,9 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") 
 
     # Check whether the mode parameter is valid
     valid = ["mse", "rmse", "mae"]
-    assert cf in valid, "Argument 'cf' must be either " + ", ".join(f"'{x}'" for x in valid)
-    
+    assert cf in valid, "Argument 'cf' must be either " + \
+        ", ".join(f"'{x}'" for x in valid)
+
     # Create the error vector (i.e. yn - the predicted n-th value)
     e = y - tx.dot(w)
 

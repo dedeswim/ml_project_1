@@ -11,27 +11,27 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray
                             max_iters: int, gamma: float, method: str = 'sgd', ratio: float = 0.7) -> Tuple[np.ndarray, float]:
     """
     Does the regularized logistic linear.
-    
+
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     lambda_: float
         The lambda used for regularization. Default behavior is without regularization.
-    
+
     initial_w: ndarray
         Array containing the linear parameters to start with.
-    
+
     max_iters: int
         The maximum number of iterations to do.
-    
+
     gamma: float
         Gradient descent stepsize. Only used for gd.
-        
+
     method: str
         The method for the optimization solution. Should be either SGD, Newton or GD.
 
@@ -42,12 +42,13 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray
     -------
     w: np.ndarray
         The linear parameters.
-    
+
     loss: float
         The loss given w as parameters.
     """
 
-    assert method in ['sgd', 'newton', 'gd'], "Argument 'method' must be either " + ", ".join(f"'{x}'" for x in method)
+    assert method in ['sgd', 'newton', 'gd'], "Argument 'method' must be either " + \
+        ", ".join(f"'{x}'" for x in method)
 
     # init parameters
     threshold = 1e-8
@@ -61,17 +62,19 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray
         if method in ["sgd", "newton"]:
             # Calculate gamma (Robbins-Monroe condition)
             gamma_ = gamma / pow(iteration + 1, ratio)
-        
+
         # get loss and update w.
-        loss, w, gradient = gradient_descent_step(y, tx, w, gamma_, lambda_, method=method)
+        loss, w, gradient = gradient_descent_step(
+            y, tx, w, gamma_, lambda_, method=method)
 
         # log info
         if iteration % 1000 == 0:
-            print("Current iteration={i}, loss={l}".format(i=iteration, l=loss))
+            print("Current iteration={i}, loss={l}".format(
+                i=iteration, l=loss))
             print("||d|| = {d}".format(d=np.linalg.norm(gradient)))
         # converge criterion
         losses.append(loss)
-        #if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+        # if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
         #    break
 
     # visualization
@@ -84,21 +87,21 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
                         max_iters: int, gamma: float, method: str = 'sgd', ratio: float = 0.7) -> Tuple[np.ndarray, float]:
     """
     Does the logistic linear.
-    
+
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     initial_w: ndarray
         Array containing the linear parameters to start with.
-    
+
     max_iters: int
         The maximum number of iterations to do.
-    
+
     gamma: float
         Gradient descent stepsize. Only used for gd.
 
@@ -112,12 +115,13 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     -------
     w: np.ndarray
         The linear parameters.
-    
+
     loss: float
         The loss given w as parameters.
     """
 
-    assert method in ['sgd', 'newton', 'gd'], "Argument 'method' must be either " + ", ".join(f"'{x}'" for x in method)
+    assert method in ['sgd', 'newton', 'gd'], "Argument 'method' must be either " + \
+        ", ".join(f"'{x}'" for x in method)
 
     return reg_logistic_regression(y, tx, initial_w, 0, max_iters, gamma, method=method, ratio=ratio)
 
@@ -126,18 +130,18 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: n
                           lambda_: float = 0, method='sgd') -> Tuple[float, np.ndarray, np.ndarray]:
     """
     Does one step of gradient descent.
-    
+
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     w: ndarray
         Array containing the linear parameters to test.
-    
+
     lambda_: float
         The lambda used for regularization. Default behavior is without regularization.
 
@@ -150,12 +154,13 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: n
     -------
     w: np.ndarray
         The linear parameters.
-    
+
     loss: float
         The loss given w as parameters.
     """
 
-    assert method in ['sgd', 'newton', 'gd'], "Argument 'method' must be either " + ", ".join(f"'{x}'" for x in method)
+    assert method in ['sgd', 'newton', 'gd'], "Argument 'method' must be either " + \
+        ", ".join(f"'{x}'" for x in method)
 
     # Get loss, gradient, hessian
     loss = compute_loss(y, tx, w, lambda_=lambda_)

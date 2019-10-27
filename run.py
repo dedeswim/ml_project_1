@@ -8,8 +8,9 @@ from src.plots import plot_lambda_accuracy, plot_lambda_error, plot_poly_degree_
 from src.linear.loss import compute_loss
 from src.k_fold import cross_validation, build_k_indices
 
+
 def ridge_regression_sets(x, y, lambda_, k):
-    
+
     # Create lists to save the different ws, accuracies and losses for the
     # different subsets we run the training on
     ws = []
@@ -23,17 +24,18 @@ def ridge_regression_sets(x, y, lambda_, k):
 
     # Iterate over the different subsets
     for i, indexes in enumerate(x_jet_indexes):
-        
+
         # Get the rows relative to the i-th subset taken in consideration
         tx_i = prepare_x(x, x_jet_indexes, i)
         y_i = y[indexes]
-        
+
         # Get indices for cross-validation
         k_indices = build_k_indices(y_i, k, 1)
-        
+
         # Perform the training on the given-subset using cross validation and Ridge Regression
         w, tr_loss, te_loss, tr_acc, te_acc = \
-            cross_validation(y_i, tx_i, k_indices, k, lambda_, ridge_regression)
+            cross_validation(y_i, tx_i, k_indices, k,
+                             lambda_, ridge_regression)
 
         # Add the results of the training of the i-th subset
         ws.append(w)
@@ -41,14 +43,15 @@ def ridge_regression_sets(x, y, lambda_, k):
         tr_accs.append(tr_acc * tx_i.shape[0])
         te_losses.append(te_loss * tx_i.shape[0])
         tr_losses.append(tr_loss * tx_i.shape[0])
-    
+
     # Compute the mean results from all the subsets
     mean_tr_loss = sum(tr_losses) / x.shape[0]
     mean_te_loss = sum(te_losses) / x.shape[0]
     mean_tr_acc = sum(tr_accs) / x.shape[0]
     mean_te_acc = sum(te_accs) / x.shape[0]
-    
-    return ws, mean_tr_loss, mean_te_loss, mean_tr_acc, mean_te_acc 
+
+    return ws, mean_tr_loss, mean_te_loss, mean_tr_acc, mean_te_acc
+
 
 def main():
 
@@ -65,10 +68,13 @@ def main():
     print("Starting training with Ridge Regression...\n")
 
     # Run Ridge Regression
-    ws, tr_loss, te_loss, tr_acc, te_acc = ridge_regression_sets(x, y, lambda_, k)
+    ws, tr_loss, te_loss, tr_acc, te_acc = ridge_regression_sets(
+        x, y, lambda_, k)
 
-    print("Train accuracy={tr_acc:.3f}, test accuracy={te_acc:.3f}".format(tr_acc=tr_acc, te_acc=te_acc))
-    print("Train MSE={tr_loss:.3f}, test MSE={te_loss:.3f}".format(tr_loss=tr_loss, te_loss=te_loss))
+    print("Train accuracy={tr_acc:.3f}, test accuracy={te_acc:.3f}".format(
+        tr_acc=tr_acc, te_acc=te_acc))
+    print("Train MSE={tr_loss:.3f}, test MSE={te_loss:.3f}".format(
+        tr_loss=tr_loss, te_loss=te_loss))
 
     print("\n\nGenerating .csv file...")
 
@@ -89,12 +95,14 @@ def main():
         tx_sub = prepare_x(x_sub, x_sub_jet_indexes, i)
 
         # Predict the labels
-        y_sub[x_sub_jet_indexes[i]] = predict_labels(ws[i], tx_sub, mode='linear')
+        y_sub[x_sub_jet_indexes[i]] = predict_labels(
+            ws[i], tx_sub, mode='linear')
 
     # Create the submission file
     create_csv_submission(ids_sub, y_sub, 'final-test.csv')
 
     print("\nfinal-test.csv file generated")
+
 
 if __name__ == "__main__":
     main()

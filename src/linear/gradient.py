@@ -9,10 +9,10 @@ def compute_gradient(y: np.ndarray, tx: np.ndarray, w: np.ndarray) -> np.ndarray
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     w: ndarray
         Array containing the parameters of the linear model, from w0 on.
 
@@ -39,10 +39,10 @@ def compute_subgradient(y, tx, w):
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     w: ndarray
         Array containing the parameters of the linear model, from w0 on.
 

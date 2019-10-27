@@ -240,6 +240,9 @@ def get_jet_indexes(x):
     ]
 
 
+"""
+TODO
+"""
 jet_indexes = [
     [4, 5, 6, 12, 23, 24, 25, 26, 27, 28],
     [4, 5, 6, 12, 26, 27, 28],
@@ -248,6 +251,9 @@ jet_indexes = [
 
 
 def compute_accuracy(tx, w, y, mode="logistic"):
+    """
+    TODO
+    """
 
     assert mode == "logistic" or "linear", "The model should be either logistic or linear"
 
@@ -257,6 +263,9 @@ def compute_accuracy(tx, w, y, mode="logistic"):
 
 
 def clean_mass_feature(x):
+    """
+    TODO
+    """
     x_mass = np.zeros(x.shape[0])
     x_mass[x[:, 0] == -999] = 1
     x[:, 0][x[:, 0] == -999] = np.median(x[:, 0][x[:, 0] != -999])
@@ -266,6 +275,9 @@ def clean_mass_feature(x):
 
 
 def prepare_x(x, indexes, i):
+    """
+    TODO
+    """
     # Get the rows relative to the i-th subset taken in consideration
     tx_i = x[indexes[i]]
 

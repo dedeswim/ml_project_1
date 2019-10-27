@@ -16,16 +16,16 @@ def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     initial_w: ndarray
         Array containing the linear parameters to start from.
-    
+
     max_iters: int
         The maximum number of iterations to be done.
-    
+
     gamma: float
         The stepsize of the GD
 
@@ -33,7 +33,7 @@ def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     -------
     w: np.ndarray
         The linear parameters.
-    
+
     loss: float
         The loss given w as parameters.
     """
@@ -64,16 +64,16 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     initial_w: ndarray
         Array containing the linear parameters to start from.
-    
+
     max_iters: int
         The maximum number of iterations to be done.
-    
+
     ratio: float
         The ratio at which the stepsize converges (0.5 - 1.0), default = 0.7.
 
@@ -81,7 +81,7 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     -------
     w: np.ndarray
         The linear parameters.
-    
+
     loss: float
         The loss given w as parameters.
     """
@@ -113,19 +113,19 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
 def least_squares(y: np.ndarray, tx: np.ndarray) -> Tuple[float, np.ndarray]:
     """
     Computes the least squares solution.
-    
+
     Parameters
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
     Returns
     -------
     w: np.ndarray
         The linear parameters.
-    
+
     loss: float
         The loss given w as parameters.
     """
@@ -144,10 +144,10 @@ def ridge_regression(y: np.ndarray, tx: np.ndarray, lambda_: float) -> Tuple[flo
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     lambda_: float
         Lambda regularization parameter
 
@@ -156,14 +156,15 @@ def ridge_regression(y: np.ndarray, tx: np.ndarray, lambda_: float) -> Tuple[flo
     -------
     w: np.ndarray
         The linear parameters.
-    
+
     loss: float
         The loss given w as parameters.
     """
 
     lambda_p = lambda_ * 2 * tx.shape[0]
 
-    w = np.linalg.solve(tx.T.dot(tx) + lambda_p * np.eye(tx.shape[1]), tx.T.dot(y))
+    w = np.linalg.solve(tx.T.dot(tx) + lambda_p *
+                        np.eye(tx.shape[1]), tx.T.dot(y))
     loss = compute_loss(y, tx, w)
 
     return loss, w

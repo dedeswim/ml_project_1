@@ -16,10 +16,10 @@ def split_data(x: np.ndarray, y: np.ndarray, ratio: float, seed: float = 1) -> \
     ----------
     x : np.ndarray
         The array containing the features.
-    
+
     y : np.ndarray
         The array containing the targets
-    
+
     ratio: float
         The ratio between the number of wanted training data points and
         the total number of data points.
@@ -36,7 +36,8 @@ def split_data(x: np.ndarray, y: np.ndarray, ratio: float, seed: float = 1) -> \
 
     # Randomly choose indexes of train set
     data_len = x.shape[0]
-    idxs = np.random.choice(data_len, size=round(data_len * ratio), replace=False)
+    idxs = np.random.choice(data_len, size=round(
+        data_len * ratio), replace=False)
 
     # Create a mask from indexes
     mask = np.zeros(data_len, dtype=bool)

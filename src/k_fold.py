@@ -35,10 +35,10 @@ def cross_validation(y, x, k_indices, k, lambda_, model, mean=True):
 
         # Calculate the loss for test data
         loss_te = compute_loss(y_test, x_test, w)
-        
+
         acc_tr = compute_accuracy(x_train, w, y_train, mode='linear')
         acc_te = compute_accuracy(x_test, w, y_test, mode='linear')
-        
+
         accs_te.append(acc_te)
         accs_tr.append(acc_tr)
 

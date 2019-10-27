@@ -10,13 +10,13 @@ def compute_gradient(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: floa
     ----------
     y: ndarray
         Array that contains the correct values to be predicted.
-    
+
     tx: ndarray
         Matrix that contains the data points. The first column is made of 1s.
-    
+
     w: ndarray
         Array containing the linear parameters to test.
-    
+
     lambda_: float
         The lambda used for regularization. Default behavior is without regularization.
 

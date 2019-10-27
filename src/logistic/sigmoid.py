@@ -5,7 +5,7 @@ from typing import Union
 def sigmoid(t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     """
     Element-wise applies sigmoid function on t.
-    
+
     Parameters
     ----------
     t: float or ndarray
