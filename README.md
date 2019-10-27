@@ -15,8 +15,7 @@ The packages used to get the project up and running are listed in requirements.t
 ```shell
 pip install --user --requirement requirements.txt
 ```
-
-Overleaf containing the LaTex report for the Project: https://www.overleaf.com/project/5d9efa0c65fb98000163917d
+For visualization purposes in the feature selection and engineering phase, we also used matplotlib, seaborn and pandas, but they are not needed to run the models.
 
 ## Project structure
 
@@ -27,26 +26,29 @@ The project is structured in the following way:
 ├── notes.md: general notes about the project development
 ├── README.md: this file :)
 ├── requirements.txt: contains the packages used to run the project
+├── run.py: contains the **final code** to train the model
+├── implementations.py: contains **all** the implementations required by the project
 ├── data: contains the datasets (.gitignore'd)
 │   ├── test.csv
 │   └── train.csv
 ├── notebooks
-│   ├── features_overview.ipynb: notebook where we study the features
-│   └── tests.ipynb: some random tests
+│   ├── features_log.ipynb: contains our investigations about taking the logarithm of the features
+│   ├── features_overview.ipynb: contains the exploratory data analysis phase
+│   ├── logistic_regression.ipynb: contains out trials with logistic regression
+│   └── ridge_regression.ipynb: contains our trials with ridge regression
 └── src
-    ├── main.py: will contain the final code to train the model
-    ├── helpers.py
-    ├── split.py
+    ├── helpers.py: some helper functions used by different modules
+    ├── split.py: contains the function used to split the dataset into training and test sets
+    ├── k_fold.py: contains the functions used for cross-validation
+    ├── polynomials.py: contains the functions used to get the polynom
     ├── logistic: contains the functions used to train the logistic regression model
-    │   ├── cost.py
-    │   ├── gradient.py
-    │   ├── hessian.py
-    │   ├── implementations.py
-    │   └── sigmoid.py
-    └── regression: contains the functions used to train the linear regression model
-        ├── gradient.py
-        ├── implementations.py
-        ├── loss.py
-        ├── non_required_impl.py: some useful implementations that are not required by the project
-        └── polynomials.py
+    │   ├── loss.py: contains the function to compute the loss function
+    │   ├── gradient.py: contains the function to compute the gradient
+    │   ├── hessian.py: contains the function to compute the hessian
+    │   ├── implementations.py: contains the **logistic regression** implementations required by the project
+    │   └── sigmoid.py: contains the function to compute the sigmoid
+    └── linear: contains the functions used to train the linear regression model
+        ├── gradient.py: contains the function to compute the gradient
+        ├── implementations.py: contains the **linear regression** implementations required by the project
+        └── loss.py: contains the function to compute the loss function
 ```

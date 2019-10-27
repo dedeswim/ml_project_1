@@ -4,7 +4,8 @@
 import csv
 import numpy as np
 from typing import Tuple
-from src.polynomials import build_poly_matrix_vandermonde
+
+from src.polynomials import build_poly_matrix_quadratic
 
 
 def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000) \
@@ -258,3 +259,32 @@ def compute_accuracy(tx, w, y, mode="logistic"):
     y_pred = predict_labels(w, tx, mode=mode)
 
     return (y_pred == y).sum() / y_pred.shape[0]
+
+def clean_mass_feature(x):
+    x_mass = np.zeros(x.shape[0])
+    x_mass[x[:, 0] == -999] = 1
+    x[:, 0][x[:, 0] == -999] = np.median(x[:, 0][x[:, 0] != -999])
+    x = np.column_stack((x, x_mass))
+    
+    return x
+
+def prepare_x(x, i, indexes):
+    
+    # Get the rows relative to the i-th subset taken in consideration
+    tx_i = x[indexes[i]]
+        
+    # Delete the columns that are -999 for the given subset
+    tx_del = np.delete(tx_i, indexes[i], axis=1)
+        
+    # Take the logarithm of each column
+    for li in range(tx_del.shape[1]):
+        tx_del[:,li] = np.apply_along_axis(lambda n: np.log(1 + abs(tx_del[:,li].min()) + n), 0, tx_del[:,li])
+        
+    # Standardize the data
+    tx_std = standardize(tx_del)[0]
+        
+    # Build the polynomial expansion of degree 2 and add the 1s column
+    tx = build_poly_matrix_quadratic(tx_std)
+    tx = np.c_[np.ones((tx.shape[0], 1)), tx]
+    
+    return tx
