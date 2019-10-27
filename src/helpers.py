@@ -73,7 +73,6 @@ def standardize(x: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     mean_x: np.ndarray
         The standard deviation of x before the standardization
     """
-    x[:, 0][x[:, 0] == -999] = np.median(x[:, 0][x[:, 0] != -999])
     mean_x = np.mean(x)
     x = x - mean_x
     std_x = np.std(x)
@@ -235,13 +234,18 @@ def get_jet_indexes(x):
         2: np.bitwise_or(x[:, 22] == 2, x[:, 22] == 3)
     }
 
+def get_all(x):
+    return {
+        0: [True for x in range(x.shape[0])]
+    }
+
 jet_indexes = [
         [4, 5, 6, 12, 23, 24, 25, 26, 27, 28],
         [4, 5, 6, 12, 26, 27, 28],
         []
     ]
 
-log_indexes = [1, 2, 3, 5, 6, 7, 9, 12, 15]
+log_indexes = [0, 1, 2, 3, 5, 6, 7, 9, 12, 15]
 
 def compute_accuracy(tx, w, y, mode="logistic"):
 

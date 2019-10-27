@@ -46,4 +46,4 @@ def cross_validation(y, x, k_indices, k, lambda_, model, mean=True):
         losses_te.append(np.math.sqrt(2 * loss_te))
         ws.append(w)
 
-    return np.mean(ws), np.mean(losses_tr), np.mean(losses_te), np.mean(accs_tr), np.mean(accs_te)
+    return np.mean(ws, axis=0), np.mean(losses_tr), np.mean(losses_te), np.mean(accs_tr), np.mean(accs_te)
