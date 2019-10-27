@@ -246,12 +246,6 @@ jet_indexes = [
         []
     ]
 
-log_indexes = [
-    [0, 1, 2, 3, 4, 5, 6, 9, 11],
-    [0, 1, 2, 3, 4, 5, 6, 9, 11],
-    [0, 1, 2, 3, 5, 6, 7, 9, 12, 13, 15]    
-]
-
 def compute_accuracy(tx, w, y, mode="logistic"):
 
     assert mode == "logistic" or "linear", "The model should be either logistic or linear"
@@ -268,13 +262,12 @@ def clean_mass_feature(x):
     
     return x
 
-def prepare_x(x, i, indexes):
-    
+def prepare_x(x, indexes, i):
     # Get the rows relative to the i-th subset taken in consideration
     tx_i = x[indexes[i]]
         
     # Delete the columns that are -999 for the given subset
-    tx_del = np.delete(tx_i, indexes[i], axis=1)
+    tx_del = np.delete(tx_i, jet_indexes[i], axis=1)
         
     # Take the logarithm of each column
     for li in range(tx_del.shape[1]):
