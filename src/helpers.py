@@ -245,7 +245,11 @@ jet_indexes = [
         []
     ]
 
-log_indexes = [0, 1, 2, 3, 5, 6, 7, 9, 12, 15]
+log_indexes = [
+    [0, 1, 2, 3, 4, 5, 6, 9, 11],
+    [0, 1, 2, 3, 4, 5, 6, 9, 11],
+    [0, 1, 2, 3, 5, 6, 7, 9, 12, 13, 15]    
+]
 
 def compute_accuracy(tx, w, y, mode="logistic"):
 
