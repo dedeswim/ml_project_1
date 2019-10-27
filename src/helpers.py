@@ -36,7 +36,8 @@ def load_csv_data(data_path: str, sub_sample: bool = False, sub_sample_size=1000
     ids: ndarray
         Array containing the id of the data points.
     """
-    y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=[1])
+    y = np.genfromtxt(data_path, delimiter=",",
+                      skip_header=1, dtype=str, usecols=[1])
     x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
     ids = x[:, 0].astype(np.int)
     input_data = x[:, 2:]
@@ -81,7 +82,7 @@ def standardize(x: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     return x, mean_x, std_x
 
 
-def predict_labels(weights: np.ndarray, data: np.ndarray, mode: str="logistic") -> np.ndarray:
+def predict_labels(weights: np.ndarray, data: np.ndarray, mode: str = "logistic") -> np.ndarray:
     """
     Generates class predictions given weights, and a test data matrix.
 
@@ -157,7 +158,8 @@ def remove_incomplete_columns(x: np.ndarray, threshold: float = 0.30) -> Tuple[n
         Boolean array of the kept columns.
     """
 
-    to_keep = np.apply_along_axis(count_missing_values, 0, x, [threshold]).flatten()
+    to_keep = np.apply_along_axis(
+        count_missing_values, 0, x, [threshold]).flatten()
 
     return x[:, to_keep], to_keep
 
@@ -209,6 +211,7 @@ def remove_correlated_columns(x: np.ndarray, threshold: float = 0.9) -> Tuple[np
     to_remove = set(to_remove)
     return np.delete(x, list(to_remove), axis=1), np.array([i not in to_remove for i in range(x.shape[1])])
 
+
 def flatten_jet_features(x, indexes=[4, 5, 6, 12, 23, 24, 25, 26, 27, 28]):
     """
     TODO
@@ -224,27 +227,25 @@ def flatten_jet_features(x, indexes=[4, 5, 6, 12, 23, 24, 25, 26, 27, 28]):
 
     return np.delete(x_new_column, indexes, axis=1)
 
+
 def get_jet_indexes(x):
     """
     TODO
     """
 
-    return {
-        0: x[:, 22] == 0,
-        1: x[:, 22] == 1,
-        2: np.bitwise_or(x[:, 22] == 2, x[:, 22] == 3)
-    }
+    return [
+        x[:, 22] == 0,
+        x[:, 22] == 1,
+        np.bitwise_or(x[:, 22] == 2, x[:, 22] == 3)
+    ]
 
-def get_all(x):
-    return {
-        0: [True for x in range(x.shape[0])]
-    }
 
 jet_indexes = [
-        [4, 5, 6, 12, 23, 24, 25, 26, 27, 28],
-        [4, 5, 6, 12, 26, 27, 28],
-        []
-    ]
+    [4, 5, 6, 12, 23, 24, 25, 26, 27, 28],
+    [4, 5, 6, 12, 26, 27, 28],
+    []
+]
+
 
 def compute_accuracy(tx, w, y, mode="logistic"):
 
@@ -254,30 +255,33 @@ def compute_accuracy(tx, w, y, mode="logistic"):
 
     return (y_pred == y).sum() / y_pred.shape[0]
 
+
 def clean_mass_feature(x):
     x_mass = np.zeros(x.shape[0])
     x_mass[x[:, 0] == -999] = 1
     x[:, 0][x[:, 0] == -999] = np.median(x[:, 0][x[:, 0] != -999])
     x = np.column_stack((x, x_mass))
-    
+
     return x
+
 
 def prepare_x(x, indexes, i):
     # Get the rows relative to the i-th subset taken in consideration
     tx_i = x[indexes[i]]
-        
+
     # Delete the columns that are -999 for the given subset
     tx_del = np.delete(tx_i, jet_indexes[i], axis=1)
-        
+
     # Take the logarithm of each column
     for li in range(tx_del.shape[1]):
-        tx_del[:,li] = np.apply_along_axis(lambda n: np.log(1 + abs(tx_del[:,li].min()) + n), 0, tx_del[:,li])
-        
+        tx_del[:, li] = np.apply_along_axis(lambda n: np.log(
+            1 + abs(tx_del[:, li].min()) + n), 0, tx_del[:, li])
+
     # Standardize the data
     tx_std = standardize(tx_del)[0]
-        
+
     # Build the polynomial expansion of degree 2 and add the 1s column
     tx = build_poly_matrix_quadratic(tx_std)
     tx = np.c_[np.ones((tx.shape[0], 1)), tx]
-    
+
     return tx

@@ -18,14 +18,15 @@ def ridge_regression_sets(x, y, lambda_, k):
     te_losses = []
     tr_losses = []
 
+    # Get the mask with the rows belonging to each subset
     x_jet_indexes = get_jet_indexes(x)
 
     # Iterate over the different subsets
-    for i in x_jet_indexes:
+    for i, indexes in enumerate(x_jet_indexes):
         
         # Get the rows relative to the i-th subset taken in consideration
         tx_i = prepare_x(x, x_jet_indexes, i)
-        y_i = y[x_jet_indexes[i]]
+        y_i = y[indexes]
         
         # Get indices for cross-validation
         k_indices = build_k_indices(y_i, k, 1)
@@ -54,7 +55,7 @@ def main():
     # Import data
     y, x_raw, ids = load_csv_data('data/train.csv')
 
-    # get the i-th subset
+    # Deal with mass missing values
     x = clean_mass_feature(x_raw)
 
     # Set hyperparameters
@@ -62,6 +63,8 @@ def main():
     k = 5
 
     print("Starting training with Ridge Regression...\n")
+
+    # Run Ridge Regression
     ws, tr_loss, te_loss, tr_acc, te_acc = ridge_regression_sets(x, y, lambda_, k)
 
     print("Train accuracy={tr_acc:.3f}, test accuracy={te_acc:.3f}".format(tr_acc=tr_acc, te_acc=te_acc))
@@ -69,19 +72,26 @@ def main():
 
     print("\n\nGenerating .csv file...")
 
+    # Open the test dataset
     y_sub, x_sub_raw, ids_sub = load_csv_data('data/test.csv')
+
+    # Get the mask with the rows belonging to each subset
     x_sub_jet_indexes = get_jet_indexes(x_sub_raw)
 
-    x_sub = x_sub_raw
-
+    # Deal with mass missing values
     x_sub = clean_mass_feature(x_sub_raw)
 
+    # Iterate over the parameters of the models trained on the different
+    # subsets, and predict the labels of each subset
     for i, w in enumerate(ws):
 
+        # Prepare the feature of the i-th subset
         tx_sub = prepare_x(x_sub, x_sub_jet_indexes, i)
 
+        # Predict the labels
         y_sub[x_sub_jet_indexes[i]] = predict_labels(ws[i], tx_sub, mode='linear')
 
+    # Create the submission file
     create_csv_submission(ids_sub, y_sub, 'final-test.csv')
 
     print("\nfinal-test.csv file generated")
