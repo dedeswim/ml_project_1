@@ -18,6 +18,12 @@ pip3 install --user --requirement requirements.txt
 
 For visualization purposes in the feature selection and engineering phase, we also used `matplotlib`, `seaborn`, `sklearn`, and `pandas`, but they are not needed to run the models and the final training.
 
+The training and the prediction on the provided test sets can be done running:
+
+```bash
+python3 run.py
+```
+
 Moreover, the data are supposed to be in the `data` folder (with respect to the `run.py` script), and are supposed to have the names `train.csv` and `test.csv`. It is possible to download the data we used from [this](https://www.aicrowd.com/challenges/epfl-machine-learning-higgs-2019/dataset_files) page.
 
 The output of the prediction can be found in the `final-test.csv` file, located in the same folder as `run.py`.
