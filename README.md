@@ -10,12 +10,14 @@ The team (SchroedingerCats) is composed by:
 - Mari Sofie Lerfaldet ([@marisofie](https://github.com/marisofie))
 - Davide Nanni ([@DSAureli](https://github.com/DSAureli))
 
-The project has been developed and tested with Python 3, and the packages used to get the project up and running are listed in requirements.txt, and can be installed with:
+The project has been developed and tested with Python 3.6, and the packages used to get the project up and running are listed in requirements.txt, and can be installed with:
 
 ```shell
 pip3 install --user --requirement requirements.txt
 ```
 For visualization purposes in the feature selection and engineering phase, we also used `matplotlib`, `seaborn` and `pandas`, but they are not needed to run the models and the final training.
+
+Moreover, the data are supposed to be in the `data` folder (with respect to the `run.py` script), and are supposed to have the names `train.csv` and `test.csv`.
 
 ## Project structure
 
