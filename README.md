@@ -20,6 +20,8 @@ For visualization purposes in the feature selection and engineering phase, we al
 
 Moreover, the data are supposed to be in the `data` folder (with respect to the `run.py` script), and are supposed to have the names `train.csv` and `test.csv`. It is possible to download the data we used from [this](https://www.aicrowd.com/challenges/epfl-machine-learning-higgs-2019/dataset_files) page.
 
+The output of the prediction can be found in the `final-test.csv` file.
+
 ## Project structure
 
 The project is structured in the following way:
