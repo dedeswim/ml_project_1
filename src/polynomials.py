@@ -4,18 +4,20 @@
 import numpy as np
 
 
-def build_poly_matrix_vandermonde(x, degree):
+def build_poly_matrix_vandermonde(x: np.ndarray, degree: int):
     """
-    polynomial basis functions for input data x, for j=0 up to j=degree.
+    Homogeneous polynomial basis for input data x, for j=0 up to j=degree.
     """
+
+    assert degree >= 2, "Argument 'degree' must be an integer >= 2"
 
     mat_van = np.polynomial.polynomial.polyvander(x.T, degree)
     return np.unique(np.hstack(list(mat_van[x] for x in range(mat_van.shape[0]))), axis=1)
 
 
-def build_poly_matrix_quadratic(x):
+def build_poly_matrix_quadratic(x: np.ndarray) -> np.ndarray:
     """
-    TOWRITE
+    Complete quadratic polynomial basis
     """
 
     cols = [c for c in x.T]
