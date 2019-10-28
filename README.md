@@ -15,7 +15,8 @@ The project has been developed and tested with Python 3.6, and the packages used
 ```shell
 pip3 install --user --requirement requirements.txt
 ```
-For visualization purposes in the feature selection and engineering phase, we also used `matplotlib`, `seaborn` and `pandas`, but they are not needed to run the models and the final training.
+
+For visualization purposes in the feature selection and engineering phase, we also used `matplotlib`, `seaborn`, `sklearn`, and `pandas`, but they are not needed to run the models and the final training.
 
 Moreover, the data are supposed to be in the `data` folder (with respect to the `run.py` script), and are supposed to have the names `train.csv` and `test.csv`. It is possible to download the data we used from [this](https://www.aicrowd.com/challenges/epfl-machine-learning-higgs-2019/dataset_files) page.
 
@@ -30,7 +31,7 @@ The project is structured in the following way:
 ├── README.md: this file :)
 ├── requirements.txt: contains the packages used to run the project
 ├── run.py: contains the **final code** to train the model
-├── tests.ipynb:a notebook that contains the tests of the required implementations
+├── tests.ipynb: a notebook that contains the tests of the required implementations, that can be used as guide for usage
 ├── data: contains the datasets (.gitignore'd)
 ├── notebooks
 │   ├── features_log.ipynb: contains our investigations about taking the logarithm of the features
