@@ -14,17 +14,17 @@ def plot_lambda_accuracy(train_errors, test_errors, lambdas, degree):
     degree is just used for the title of the plot.
     """
     plt.figure()
+ 
     plt.rc('font', family='serif', serif='Times')
     plt.rc('text', usetex=True)
     plt.semilogx(lambdas, train_errors, color='b',
                  marker='*', label="Train accuracy")
     plt.semilogx(lambdas, test_errors, color='r',
                  marker='*', label="Test accuracy")
-    plt.legend( loc = 'upper left')
     plt.xlabel("lambda")
     plt.ylabel("accuracy")
     plt.title("Ridge regression for quadratic expansion")
-    leg = plt.legend(loc=1, shadow=True)
+    leg = plt.legend(loc='best', shadow=True)
     leg.draw_frame(False)
     plt.savefig("lambda_search_accuracy.pdf")
 
@@ -39,17 +39,17 @@ def plot_lambda_error(train_errors, test_errors, lambdas, degree):
     degree is just used for the title of the plot.
     """
     plt.figure()
+ 
     plt.rc('font', family='serif', serif='Times')
     plt.rc('text', usetex=True)
     plt.semilogx(lambdas, train_errors, color='b',
                  marker='*', label="Train error")
     plt.semilogx(lambdas, test_errors, color='r',
                  marker='*', label="Test error")
-    plt.legend( loc = 'upper left')
     plt.xlabel("lambda")
     plt.ylabel("RMSE")
     plt.title("Ridge regression for quadratic expansion")
-    leg = plt.legend(loc=1, shadow=True)
+    leg = plt.legend(loc='best', shadow=True)
     leg.draw_frame(False)
     plt.savefig("lambda_search_error.pdf")
 
@@ -64,15 +64,15 @@ def plot_poly_degree_error(train_errors, test_errors, degrees, lambda_):
     degree is just used for the title of the plot.
     """
     plt.figure()
+ 
     plt.rc('font', family='serif', serif='Times')
     plt.rc('text', usetex=True)
     plt.plot(degrees, train_errors, color='b', marker='*', label="Train error")
     plt.plot(degrees, test_errors, color='r', marker='*', label="Test error")
-    plt.legend( loc = 'upper left')
     plt.xlabel("degree")
     plt.ylabel("RMSE")
     plt.title("Ridge regression for lambda " + str(lambda_))
-    leg = plt.legend(loc=1, shadow=True)
+    leg = plt.legend(loc='best', shadow=True)
     leg.draw_frame(False)
     plt.savefig("poly_search_error.pdf")
 
@@ -87,16 +87,16 @@ def plot_poly_degree_accuracy(train_errors, test_errors, degrees, lambda_):
     degree is just used for the title of the plot.
     """
     plt.figure()
+ 
     plt.rc('font', family='serif', serif='Times')
     plt.rc('text', usetex=True)    
     plt.plot(degrees, train_errors, color='b',
              marker='*', label="Train accuracy")
     plt.plot(degrees, test_errors, color='r',
              marker='*', label="Test accuracy")
-    plt.legend( loc = 'upper left')
     plt.xlabel("degree")
     plt.ylabel("accuracy")
     plt.title("Ridge regression for lambda " + str(lambda_))
-    leg = plt.legend(loc=1, shadow=True)
+    leg = plt.legend(loc='best', shadow=True)
     leg.draw_frame(False)
     plt.savefig("poly_search_accuracy.pdf")

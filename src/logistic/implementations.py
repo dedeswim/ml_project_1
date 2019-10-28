@@ -1,8 +1,8 @@
 import numpy as np
 from typing import Tuple
 
-from src.logistic.loss import compute_loss
-from src.logistic.gradient import compute_gradient
+from src.logistic.loss import compute_logistic_loss
+from src.logistic.gradient import compute_logistic_gradient
 
 
 def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
@@ -130,8 +130,8 @@ def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: f
         The loss given w as parameters.
     """
     # Get loss, gradient, hessian
-    loss = compute_loss(y, tx, w, lambda_=lambda_)
-    gradient = compute_gradient(y, tx, w, lambda_=lambda_)
+    loss = compute_logistic_loss(y, tx, w, lambda_=lambda_)
+    gradient = compute_logistic_gradient(y, tx, w, lambda_=lambda_)
 
     # Update w
     w = w - gamma * gradient

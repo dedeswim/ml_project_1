@@ -2,7 +2,7 @@ import numpy as np
 from src.logistic.sigmoid import sigmoid
 
 
-def compute_gradient(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 0) -> np.ndarray:
+def compute_logistic_gradient(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 0) -> np.ndarray:
     """"
     Calculates the of logistic linear loss.
 

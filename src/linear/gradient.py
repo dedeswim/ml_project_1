@@ -23,7 +23,7 @@ def compute_gradient(y: np.ndarray, tx: np.ndarray, w: np.ndarray) -> np.ndarray
     """
 
     # Get the number of data points
-    n = y.shape[0]
+    n = y.shape[0] if y.shape else 1
 
     # Create the error vector (i.e. yn - the predicted n-th value)
     e = y - tx.dot(w)

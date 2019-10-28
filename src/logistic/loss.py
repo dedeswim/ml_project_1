@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 0) -> float:
+def compute_logistic_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_: float = 0) -> float:
     """"
     Calculates the loss for logistic linear.
 

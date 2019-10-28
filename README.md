@@ -15,7 +15,7 @@ The packages used to get the project up and running are listed in requirements.t
 ```shell
 pip install --user --requirement requirements.txt
 ```
-For visualization purposes in the feature selection and engineering phase, we also used matplotlib, seaborn and pandas, but they are not needed to run the models.
+For visualization purposes in the feature selection and engineering phase, we also used matplotlib, seaborn and pandas, but they are not needed to run the models and the final training.
 
 ## Project structure
 
@@ -23,11 +23,12 @@ The project is structured in the following way:
 
 ```markdown
 .
+├── implementations.py: contains **all the implementations** required by the project
 ├── notes.md: general notes about the project development
 ├── README.md: this file :)
 ├── requirements.txt: contains the packages used to run the project
 ├── run.py: contains the **final code** to train the model
-├── implementations.py: contains **all** the implementations required by the project
+├── tests.ipynb:a notebook that contains the tests of the required implementations
 ├── data: contains the datasets (.gitignore'd)
 │   ├── test.csv
 │   └── train.csv

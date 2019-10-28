@@ -5,7 +5,7 @@ import numpy as np
 import math
 
 
-def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") -> float:
+def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, lambda_ = 0, cf: str = "mse") -> float:
     """
     Calculate the loss using either MSE, RMSE or MAE for linear linear.
 
@@ -17,6 +17,9 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") 
 
     w: ndarray
         Array containing the linear parameters to test.
+    
+    lambda_: float
+        The regularization lambda.
 
     cf: str
         String indicating which cost function to use; "mse" (default), "rmse" or "mae".
@@ -34,11 +37,14 @@ def compute_loss(y: np.ndarray, tx: np.ndarray, w: np.ndarray, cf: str = "mse") 
 
     # Create the error vector (i.e. yn - the predicted n-th value)
     e = y - tx.dot(w)
+    
+    # Compute the regularizer if it exists
+    lambda_p = lambda_ * 2 * tx.shape[0] if lambda_ else 0
 
     if "mse" in cf:
         mse = e.T.dot(e) / (2 * len(e))
         if cf == "rmse":
-            return math.sqrt(2 * mse)
+            return math.sqrt(2 * mse) + lambda_
         return mse
     # mae
-    return np.mean(np.abs(e))
+    return np.mean(np.abs(e)) + lambda_

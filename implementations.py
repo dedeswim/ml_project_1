@@ -1,8 +1,8 @@
 import numpy as np
 from typing import Tuple
 
-from src.logistic.loss import compute_loss
-from src.logistic.gradient import compute_gradient
+from src.logistic.loss import compute_logistic_loss
+from src.logistic.gradient import compute_logistic_gradient
 from src.linear.loss import compute_loss
 from src.linear.gradient import compute_gradient
 from random import randrange
@@ -50,7 +50,7 @@ def reg_logistic_regression(y: np.ndarray, tx: np.ndarray, lambda_: float,
     # start the logistic linear
     for iteration in range(max_iters):
         # get loss and update w.
-        loss, gradient, w = gradient_descent_step(y, tx, w, gamma, lambda_)
+        loss, gradient, w = gradient_descent_step(y, tx, w, gamma, lambda_, mode='logistic')
         # log info
         if iteration % 100 == 0:
             print("Current iteration={i}, loss={loss}".format(
@@ -102,46 +102,6 @@ def logistic_regression(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     return reg_logistic_regression(y, tx, 0, initial_w, max_iters, gamma)
 
 
-def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: float,
-                          lambda_: float = 0) -> Tuple[float, np.ndarray, np.ndarray]:
-    """
-    Computes one step of gradient descent.
-
-    Parameters
-    ----------
-    y: ndarray
-        Array that contains the correct values to be predicted.
-
-    tx: ndarray
-        Matrix that contains the data points. The first column is made of 1s.
-
-    w: ndarray
-        Array containing the linear parameters to test.
-
-    gamma: float
-        The stepsize.
-
-    lambda_: float
-        The lambda used for regularization. Default behavior is without regularization.
-
-    Returns
-    -------
-    w: np.ndarray
-        The linear parameters.
-
-    loss: float
-        The loss given w as parameters.
-    """
-    # Get loss, gradient, hessian
-    loss = compute_loss(y, tx, w, lambda_=lambda_)
-    gradient = compute_gradient(y, tx, w, lambda_=lambda_)
-
-    # Update w
-    w = w - gamma * gradient
-
-    return loss, gradient, w
-
-
 def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
                      max_iters: int, gamma: float) -> Tuple[float, np.ndarray]:
     """
@@ -191,7 +151,7 @@ def least_squares_GD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
 
 
 def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
-                      max_iters: int, ratio: float = 0.7) -> Tuple[float, np.ndarray]:
+                      max_iters: int, gamma: float) -> Tuple[float, np.ndarray]:
     """
     Stochastic gradient descent algorithm. Uses MSE loss function.
 
@@ -209,8 +169,8 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     max_iters: int
         The maximum number of iterations to be done.
 
-    ratio: float
-        The ratio at which the stepsize converges (0.5 - 1.0), default = 0.7.
+    gamma: float
+        The stepsize of the SGD.
 
     Returns
     -------
@@ -226,8 +186,6 @@ def least_squares_SGD(y: np.ndarray, tx: np.ndarray, initial_w: np.ndarray,
     loss = 0
     y_len = len(y)
     for n_iter in range(max_iters):
-        # Calculate gamma (Robbins-Monroe condition)
-        gamma = 1 / pow(n_iter + 1, ratio)
 
         rand_idx = randrange(y_len)
         rand_tx = tx[rand_idx]
@@ -295,11 +253,62 @@ def ridge_regression(y: np.ndarray, tx: np.ndarray, lambda_: float) -> Tuple[flo
     loss: float
         The loss given w as parameters.
     """
-
+    
+    # Compute the lambda
     lambda_p = lambda_ * 2 * tx.shape[0]
-
+    
+    # Solve the linear system
     w = np.linalg.solve(tx.T.dot(tx) + lambda_p *
                         np.eye(tx.shape[1]), tx.T.dot(y))
-    loss = compute_loss(y, tx, w)
-
+    
+    # Compute the loss
+    loss = compute_loss(y, tx, w, lambda_)
+    
     return loss, w
+
+
+
+def gradient_descent_step(y: np.ndarray, tx: np.ndarray, w: np.ndarray, gamma: float,
+                          lambda_: float = 0, mode='linear') -> Tuple[float, np.ndarray, np.ndarray]:
+    """
+    Computes one step of gradient descent.
+
+    Parameters
+    ----------
+    y: ndarray
+        Array that contains the correct values to be predicted.
+
+    tx: ndarray
+        Matrix that contains the data points. The first column is made of 1s.
+
+    w: ndarray
+        Array containing the linear parameters to test.
+
+    gamma: float
+        The stepsize.
+
+    lambda_: float
+        The lambda used for regularization. Default behavior is without regularization.
+    
+    mode: str
+        The kind of gradient descent. Must be either `linear` or `logistic`
+
+    Returns
+    -------
+    w: np.ndarray
+        The linear parameters.
+
+    loss: float
+        The loss given w as parameters.
+    """
+    # Get loss, gradient, hessian
+    loss = (compute_loss(y, tx, w, lambda_=lambda_) if mode == 'linear'
+            else compute_logistic_loss(y, tx, w, lambda_=lambda_))
+    
+    gradient = (compute_gradient(y, tx, w) if mode == 'linear'
+               else compute_logistic_gradient(y, tx, w, lambda_=lambda_))
+
+    # Update w
+    w = w - gamma * gradient
+
+    return loss, gradient, w

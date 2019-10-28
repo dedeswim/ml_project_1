@@ -165,6 +165,7 @@ def ridge_regression(y: np.ndarray, tx: np.ndarray, lambda_: float) -> Tuple[flo
 
     w = np.linalg.solve(tx.T.dot(tx) + lambda_p *
                         np.eye(tx.shape[1]), tx.T.dot(y))
-    loss = compute_loss(y, tx, w)
+    
+    loss = compute_loss(y, tx, w, lambda_)
 
     return loss, w
