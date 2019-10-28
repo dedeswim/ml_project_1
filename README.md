@@ -30,8 +30,6 @@ The project is structured in the following way:
 ├── run.py: contains the **final code** to train the model
 ├── tests.ipynb:a notebook that contains the tests of the required implementations
 ├── data: contains the datasets (.gitignore'd)
-│   ├── test.csv
-│   └── train.csv
 ├── notebooks
 │   ├── features_log.ipynb: contains our investigations about taking the logarithm of the features
 │   ├── features_overview.ipynb: contains the exploratory data analysis phase
