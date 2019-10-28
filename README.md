@@ -10,12 +10,12 @@ The team (SchroedingerCats) is composed by:
 - Mari Sofie Lerfaldet ([@marisofie](https://github.com/marisofie))
 - Davide Nanni ([@DSAureli](https://github.com/DSAureli))
 
-The packages used to get the project up and running are listed in requirements.txt, and can be installed with:
+The project has been developed and tested with Python 3, and the packages used to get the project up and running are listed in requirements.txt, and can be installed with:
 
 ```shell
-pip install --user --requirement requirements.txt
+pip3 install --user --requirement requirements.txt
 ```
-For visualization purposes in the feature selection and engineering phase, we also used matplotlib, seaborn and pandas, but they are not needed to run the models and the final training.
+For visualization purposes in the feature selection and engineering phase, we also used `matplotlib`, `seaborn` and `pandas`, but they are not needed to run the models and the final training.
 
 ## Project structure
 
@@ -41,7 +41,7 @@ The project is structured in the following way:
     ├── k_fold.py: contains the functions used for cross-validation
     ├── polynomials.py: contains the functions used to get the polynom
     ├── logistic: contains the functions used to train the logistic regression model
-    │   ├── loss.py: contains the function to compute the loss function
+    │   ├── loss.py: contains the function to compute the loss
     │   ├── gradient.py: contains the function to compute the gradient
     │   ├── hessian.py: contains the function to compute the hessian
     │   ├── implementations.py: contains the **logistic regression** implementations required by the project
